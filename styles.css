@@ -1,0 +1,72 @@
+a {
+    color: #1a0dab;
+    text-decoration: none;
+}
+body {
+    min-width: 980px;
+}
+#footer {
+    background-color: rgb(242, 242, 242);
+    border-top-color: rgb(228, 228, 228);
+    border-top-style: solid;
+    border-top-width: 1px;
+    bottom: 0px;
+    height: 40px;
+    left: 0px;
+    position: fixed;
+    width: 100%;
+}
+#logo {
+    background-image: url("/img/logo.png");
+    background-repeat: no-repeat;
+    background-size: 400px 200px;
+    margin: 100px auto 0;
+    height: 200px;
+    width: 400px;
+}
+#lucky-search-btn {
+    width: 143px;
+}
+#main-search-btn {
+    width: 125px;
+}
+#promo {
+    font-family: arial;
+    font-size: small;
+    margin-top: 12px;
+}
+#search-box-container {
+    height: 40px;
+    margin: auto;
+    width: 484px;
+}
+#search-box {
+    box-sizing: border-box;
+    font-family: arial;
+    font-size: 16px;
+    height: 100%;
+    padding: 6px 9px 0 9px;
+    width: 100%;
+}
+#search-btn-container {
+    padding-top: 18px;
+}
+.search-btn {
+    background-color: #f2f2f2;
+    background: -webkit-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background: -moz-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background: -ms-linear-gradient(top,#f5f5f5,#f1f1f1);
+    background: -o-linear-gradient(top,#f5f5f5,#f1f1f1);
+    border: 1px solid #f2f2f2;
+    border-radius: 2px;
+    box-sizing: border-box;
+    color: #757575;
+    display: inline-block;
+    font-family: arial;
+    font-size: 13px;
+    font-weight: bold;
+    height: 36px;
+    margin: 11px 4px;
+    padding: 10px 0;
+    text-align: center;
+}
