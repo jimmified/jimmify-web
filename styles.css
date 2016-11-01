@@ -42,12 +42,20 @@ body {
     width: 484px;
 }
 #search-box {
+    border: 1px solid rgb(217, 217, 217);
     box-sizing: border-box;
     font-family: arial;
     font-size: 16px;
     height: 100%;
     padding: 6px 9px 0 9px;
     width: 100%;
+}
+#search-box:hover {
+    border: 1px solid rgb(185, 185, 185);
+}
+#search-box:focus {
+    border: 1px solid rgb(77, 144, 254);
+    outline: none;
 }
 #search-btn-container {
     padding-top: 18px;
