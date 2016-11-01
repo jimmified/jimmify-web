@@ -3,6 +3,7 @@ a {
     text-decoration: none;
 }
 body {
+    margin: 0;
     min-width: 980px;
 }
 #footer {
@@ -69,4 +70,65 @@ body {
     margin: 11px 4px;
     padding: 10px 0;
     text-align: center;
+}
+
+.search-btn:hover {
+    border: 1px solid #C6C6C6;
+    box-shadow: 0 1px 1px rgba(0,0,0,.1);
+    color: #222;
+}
+
+.search-btn:focus {
+    border: 1px solid #4D90FE;
+    outline: none;
+}
+
+#search-bar {
+    height: 59px;
+    display: flex;
+    background-color: rgb(241, 241, 241);
+}
+
+#search-bar > #search-box-container {
+    margin-left: 0;
+    display: flex;
+}
+
+.image-container {
+    height: 41px;
+    width: 95px;
+    padding-top: 13px;
+    padding-right: 10px;
+    padding-left: 13px;
+}
+
+.image-container > img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#search-button {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: #4285F4;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border: none;
+    background-image: none;
+}
+
+#search-button:hover {
+    background-color: #3B78E7;
+}
+
+.mag-glass {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    color: transparent;
+    background: url(https://www.google.com/images/nav_logo242.png) no-repeat -107px -55px;
+    margin: 7px auto;
 }
