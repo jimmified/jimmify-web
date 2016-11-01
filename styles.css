@@ -18,11 +18,11 @@ body {
     width: 100%;
 }
 #logo {
-    background-image: url("img/logo5.png");
+    background-image: url("img/logo6.png");
     background-repeat: no-repeat;
-    background-size: 400px 200px;
+    background-size: 400px 160px;
     margin: 100px auto 0;
-    height: 200px;
+    height: 170px;
     width: 400px;
 }
 #lucky-search-btn {
