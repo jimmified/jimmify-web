@@ -18,7 +18,7 @@ body {
     width: 100%;
 }
 #logo {
-    background-image: url("img/logo.png");
+    background-image: url("img/logo5.png");
     background-repeat: no-repeat;
     background-size: 400px 200px;
     margin: 100px auto 0;
@@ -47,7 +47,7 @@ body {
     font-family: arial;
     font-size: 16px;
     height: 100%;
-    padding: 6px 9px 0 9px;
+    padding: 0px 9px 0 9px;
     width: 100%;
 }
 #search-box:hover {
