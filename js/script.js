@@ -16,18 +16,22 @@
     // set all of the event listeners that are needed
     function setListeners() {
         // whenever the url anchor changes, render the correct page
+        $(window).off("hashchange");
         $(window).on("hashchange", function() {
             resolveLocation();
         })
         // perform a search on the main page when the "Jimmy Search" button is clicked
+        $("#main-search-btn").off("click");
         $("#main-search-btn").click(function() {
             makeSearch();
         })
         // perform a search when the magnifying glass is clicked on the search results page
+        $("#search-button").off("click");
         $("#search-button").click(function() {
             makeSearch();
         })
         // perform a search after pressing "enter" with the search box focused
+        $(document).off("keyup");
         $(document).keyup(function(e) {
             if (e.which == 13 && $("#search-box").is(":focus")) {
                 makeSearch();
