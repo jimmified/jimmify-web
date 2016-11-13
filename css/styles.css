@@ -18,11 +18,9 @@ body {
     width: 100%;
 }
 #logo {
-    background-image: url("img/logo.png");
-    background-repeat: no-repeat;
-    background-size: 400px 160px;
-    margin: 100px auto 0;
-    height: 170px;
+    display: block;
+    margin: 100px auto 10px;
+    height: 160px;
     width: 400px;
 }
 #lucky-search-btn {
@@ -70,6 +68,7 @@ body {
     border-radius: 2px;
     box-sizing: border-box;
     color: #757575;
+    cursor: default;
     display: inline-block;
     font-family: arial;
     font-size: 13px;

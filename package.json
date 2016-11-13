@@ -1,0 +1,29 @@
+{
+  "name": "jimmify-web",
+  "version": "1.0.0",
+  "description": "personalized jimmy search",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jimmified/jimmify-web.git"
+  },
+  "keywords": [
+    "jimmy",
+    "jimmify"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jimmified/jimmify-web/issues"
+  },
+  "homepage": "https://github.com/jimmified/jimmify-web#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-handlebars": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "load-grunt-tasks": "^3.5.2"
+  }
+}
