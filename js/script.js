@@ -47,7 +47,16 @@
     // context should be a JSON object that acts as the context for the template
     function renderPage(name, href, context) {
         location.href = href;
-        $("body").html(Templates[name](context));
+        insertTemplate(name, "body", context);
+    }
+
+    // insert the Handlebars template into the page.
+    // name should be the name of the Handlebars template, i.e. main.hbs -> "main",
+    // containerSelector should be the jQuery selector for the element that will have
+    //                   its HTML be set to the Handlebars template
+    // context should be a JSON object that acts as the context for the template
+    function insertTemplate(name, containerSelector, context) {
+        $(containerSelector).html(Templates[name](context));
     }
 
     // look at the current url. if the anchor component has the form "#q={query}"
