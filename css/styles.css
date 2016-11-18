@@ -33,6 +33,11 @@ a {
     font-size: small;
     margin-top: 12px;
 }
+.question-card {
+    animation-duration: 1s;
+    animation-name: slidein;
+    animation-timing-function: ease-in-out;
+}
 #search-box-container {
     height: 40px;
     margin: auto;

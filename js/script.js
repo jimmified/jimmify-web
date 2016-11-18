@@ -122,7 +122,7 @@
                     if (data.status == "true") {
                         // pass the queue of questions as context to the
                         // template that will render each question as a card
-                        insertTemplate("questionCards", "#answer-list", data);
+                        insertTemplate("questionCards", "#question-list", data);
                     }
                 },
                 error: function(e) {
