@@ -1,0 +1,13 @@
+{{#each queue}}
+    <div class="question-card card" data-question-id={{key}}>
+        <div class="card-title">{{text}}</div>
+        <div class="card-text">Question id: {{key}}</div>
+        <div class="group">
+            <input class="answer-input" data-question-id={{key}} type="text" required>
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Answer</label>
+        </div>
+        <a class="answer-btn btn-flat" data-question-id={{key}}>RESPOND</a>
+    </div>
+{{/each}}

@@ -2,10 +2,6 @@ a {
     color: #1a0dab;
     text-decoration: none;
 }
-body {
-    margin: 0;
-    min-width: 980px;
-}
 #footer {
     background-color: rgb(242, 242, 242);
     border-top-color: rgb(228, 228, 228);
@@ -28,6 +24,9 @@ body {
 }
 #main-search-btn {
     width: 125px;
+}
+.min-width-container {
+    min-width: 980px;
 }
 #promo {
     font-family: arial;

@@ -1,0 +1,51 @@
+a.btn-flat {
+    color: #039BE5;
+    margin: 0;
+    border: none;
+    border-radius: 2px;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 10px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+    outline: 0;
+    box-shadow: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color .2s;
+    margin: 8px 30px;
+}
+.btn-flat i {
+    font-size: 1.3rem;
+    line-height: inherit;
+}
+.btn-flat.disabled,
+.btn-flat[disabled] {
+    pointer-events: none;
+    background-color: #DFDFDF !important;
+    box-shadow: none;
+    color: #9F9F9F !important;
+    cursor: default;
+}
+.btn-flat.disabled:hover,
+.btn-flat:disabled:hover {
+    background-color: #DFDFDF !important;
+    color: #9F9F9F !important;
+}
+.btn-flat:focus, .btn-flat:active {
+  background-color: transparent;
+}
+.btn-flat:focus, .btn-flat:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: none;
+}
+.btn-flat:active {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.btn-flat.disabled {
+  background-color: transparent !important;
+  color: #b3b3b3 !important;
+  cursor: default;
+}
