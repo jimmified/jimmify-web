@@ -103,17 +103,18 @@
 
     // on the admin page, get the value in the server base url input field
     function adminGetBaseUrl() {
-        return $("#server-base-url").val().trim();
+        var serverBaseUrl =  $("#server-base-url").val().trim();
+        // prepend http:// if not present
+        if (serverBaseUrl && (serverBaseUrl.substring(0, 4) != "http")) {
+            serverBaseUrl = "http://" + serverBaseUrl;
+        }
+        return serverBaseUrl;
     }
 
     // if the server base url is provided, make a request to get the queue
     // of questions that need to be answered and display each question on a card
     function adminGetQuestions() {
         var serverBaseUrl = adminGetBaseUrl();
-        // prepend http:// if not present
-        if (serverBaseUrl && (serverBaseUrl.substring(0, 4) != "http")) {
-            serverBaseUrl = "http://" + serverBaseUrl;
-        }
         if (serverBaseUrl) {
             $.ajax({
                 url: serverBaseUrl + "/queue",
