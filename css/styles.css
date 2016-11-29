@@ -152,6 +152,7 @@ a {
     font-size: 1.6em;
 }
 
+/*http://stackoverflow.com/a/27319196*/
 .loading:after {
   content: ' .';
   animation: dots 1s steps(5, end) infinite;
