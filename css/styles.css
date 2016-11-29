@@ -135,6 +135,23 @@ a {
     background-color: #3B78E7;
 }
 
+#search-results {
+    margin-left: 118px;
+    width: 700px;
+}
+
+.result-text {
+	color: rgba(0, 0, 0, 0.57);
+	font-weight: 400;
+	padding: 15px 0px 0px 0px;
+}
+
+.result-title {
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
+    font-size: 1.6em;
+}
+
 .mag-glass {
     display: inline-block;
     height: 24px;

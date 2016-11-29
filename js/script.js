@@ -55,6 +55,19 @@
         LOGO_URL = "img/logo" + parseInt(i) + ".png";
     }
 
+    // Start results joke timer while waiting
+    function resultsStartCounter(){
+        var timer = 0;
+        var timerInterval = setInterval(function(){
+            ++timer;
+            $("#timer").text(timer);
+        }, 1000);
+    }
+    //stop the timer when response is recieved
+    function resultsStopCounter(){
+        clearInterval(timerInterval);
+    }
+
     // change the current URL and render the specified Handlebars template.
     // name should be the name of the Handlebars template, i.e. main.hbs -> "main",
     // href should typically just be the anchor portion, i.e. "#q=abc",
@@ -81,8 +94,11 @@
         var hash = window.location.hash.substr(1);
         if (hash.substring(0, 2) == "q=" && hash.length > 2) {
             renderPage("search", window.location.hash, { logoUrl: LOGO_URL });
-            // set the contents of the search box to be query
-            $("#search-box").val(decodeURIComponent(hash.substring(2)));
+            // set the contents of the search box  and card to be query
+            var query = decodeURIComponent(hash.substring(2));
+            $("#search-box").val(query);
+            $(".search-text").text(query)
+            resultsStartCounter();
         }  else if (hash == "admin") {
             renderPage("admin", window.location.hash, {});
         } else {
