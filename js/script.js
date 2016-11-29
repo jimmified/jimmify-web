@@ -56,12 +56,16 @@
     }
 
     // Start results joke timer while waiting
+    var timerInterval;
     function resultsStartCounter(){
         var timer = 0;
-        var timerInterval = setInterval(function(){
-            ++timer;
-            $("#timer").text(timer);
-        }, 1000);
+        if(typeof timerInterval == 'undefined'){
+            console.log("creating")
+            timerInterval = setInterval(function(){
+                ++timer;
+                $("#timer").text(timer);
+            }, 1000);
+        }
     }
     //stop the timer when response is recieved
     function resultsStopCounter(){
