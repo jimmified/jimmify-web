@@ -101,7 +101,7 @@
             // set the contents of the search box  and card to be query
             var query = decodeURIComponent(hash.substring(2));
             $("#search-box").val(query);
-            $(".search-text").text(query)
+            $(".search-text").text(query.charAt(0).toUpperCase() + query.slice(1))
             resultsStartCounter();
         }  else if (hash == "admin") {
             renderPage("admin", window.location.hash, {});
