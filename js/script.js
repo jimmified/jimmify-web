@@ -60,7 +60,6 @@
     function resultsStartCounter(){
         var timer = 0;
         if(typeof timerInterval == 'undefined'){
-            console.log("creating")
             timerInterval = setInterval(function(){
                 ++timer;
                 $("#timer").text(timer);
