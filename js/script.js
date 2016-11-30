@@ -114,9 +114,30 @@
     function makeSearch() {
         var query = $("#search-box").val().trim();
         if (query) {
-            renderPage("search", "#q=" + encodeURIComponent(query), { logoUrl: LOGO_URL });
-            // set the contents of the search box to be the query
-            $("#search-box").val(query);
+            // send the query to the server
+            $.ajax({
+                contentType: "application/json",
+                data: JSON.stringify({
+                    text: query,
+                    type: "search"
+                }),
+                method: 'POST',
+                url: "/api/query",
+                success: function(data) {
+                    data = JSON.parse(data);
+                    if (data.status == "true") {
+                        // TODO: Do something with the query id
+                        var queryId = data.key;
+                        // send the user to the search results page
+                        renderPage("search", "#q=" + encodeURIComponent(query), { logoUrl: LOGO_URL });
+                        // set the contents of the search box to be the query
+                        $("#search-box").val(query);
+                    }
+                },
+                error: function(e) {
+                    console.log(e);
+                }
+            });
         }
     }
 
