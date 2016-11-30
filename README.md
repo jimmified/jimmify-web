@@ -24,3 +24,9 @@ command, then you won't see your changes locally. Alternatively, you can
 run `grunt watch` and grunt will automatically compile the Handlebars templates
 whenever you save a template file. This saves you from having to run `grunt build`
 each time you want to see your changes.
+
+## Hosting for local Development
+
+In order to develop locally with the server component, see the README
+for [jimmify-server](https://github.com/jimmified/jimmify-server) to learn
+how to have the Go server host the static web files.

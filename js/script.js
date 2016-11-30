@@ -45,7 +45,7 @@
         // send answer for question to server when "RESPOND" clicked on question card
         $(".answer-btn").off("click");
         $(".answer-btn").click(function(event) {
-            answerQuestion($(event.target).data("question-id"));
+            adminAnswerQuestion($(event.target).data("question-id"));
         })
     }
 
@@ -120,45 +120,31 @@
         }
     }
 
-    // on the admin page, get the value in the server base url input field
-    function adminGetBaseUrl() {
-        var serverBaseUrl =  $("#server-base-url").val().trim();
-        // prepend http:// if not present
-        if (serverBaseUrl && (serverBaseUrl.substring(0, 4) != "http")) {
-            serverBaseUrl = "http://" + serverBaseUrl;
-        }
-        return serverBaseUrl;
-    }
-
     // if the server base url is provided, make a request to get the queue
     // of questions that need to be answered and display each question on a card
     function adminGetQuestions() {
-        var serverBaseUrl = adminGetBaseUrl();
-        if (serverBaseUrl) {
-            $.ajax({
-                url: serverBaseUrl + "/queue",
-                success: function(data) {
-                    data = JSON.parse(data);
-                    if (data.status == "true") {
-                        // pass the queue of questions as context to the
-                        // template that will render each question as a card
-                        insertTemplate("questionCards", "#question-list", data);
-                    }
-                },
-                error: function(e) {
-                    console.log(e);
+        $.ajax({
+            url: "/api/queue",
+            success: function(data) {
+                data = JSON.parse(data);
+                if (data.status == "true") {
+                    // pass the queue of questions as context to the
+                    // template that will render each question as a card
+                    insertTemplate("questionCards", "#question-list", data);
                 }
-            });
-        }
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
     }
 
     // if the server base url and an answer to the question with the given id
     // are provided, send a request to the server to answer the question and
     // delete the card displaying this question
-    function answerQuestion(id) {
-        var serverBaseUrl = adminGetBaseUrl();
+    function adminAnswerQuestion(id) {
         var answer = $(".answer-input[data-question-id='" + id + "']").val().trim();
-        if (serverBaseUrl && answer) {
+        if (answer) {
             $.ajax({
                 contentType: "application/json",
                 data: JSON.stringify({
@@ -166,7 +152,7 @@
                     answer: answer
                 }),
                 method: 'POST',
-                url: serverBaseUrl + "/answer",
+                url: "/api/answer",
                 success: function(data) {
                     data = JSON.parse(data);
                     if (data.status == "true") {
