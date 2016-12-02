@@ -56,22 +56,39 @@
     }
 
     // Start results joke timer while waiting
-    var timerInterval;
+    var timerInterval = false;
     function resultsStartCounter(){
         var timer = 0;
-        if(typeof timerInterval == 'undefined'){
+        if(timerInterval == false){
             timerInterval = setInterval(function(){
                 ++timer;
                 $("#timer").text(timer);
             }, 1000);
         }
     }
-    //stop the timer when response is recieved
-    function resultsStopCounter(){
-        clearInterval(timerInterval);
+
+    //start polling for a response
+    var pollingInterval = false;
+    function resultsStartPolling(){
+        if(pollingInterval == false){
+            pollingInterval = setInterval(function(){
+                checkResponse();
+            }, 5000);
+        }
     }
 
-    // change the current URL and render the specified Handlebars template.
+    //return the answer to the user and stop polling
+    function returnAnswer(answer) {
+        console.log(answer);
+        $(".results").text(answer); //put answer in card
+        $(".loading").removeClass("loading"); //remove loading dots
+        clearInterval(pollingInterval); //stop polling
+        pollingInterval = false;
+        clearInterval(timerInterval); //stop timer
+        timerInterval = false;
+    }
+
+    // change the current URL and render the s&id=4pecified Handlebars template.
     // name should be the name of the Handlebars template, i.e. main.hbs -> "main",
     // href should typically just be the anchor portion, i.e. "#q=abc",
     // context should be a JSON object that acts as the context for the template
@@ -101,7 +118,8 @@
             var query = decodeURIComponent(hash.substring(2));
             $("#search-box").val(query);
             $(".search-text").text(query.charAt(0).toUpperCase() + query.slice(1))
-            resultsStartCounter();
+            resultsStartCounter(); //start counting
+            resultsStartPolling(); //start checking
         }  else if (hash == "admin") {
             renderPage("admin", window.location.hash, {});
         } else {
@@ -126,12 +144,38 @@
                 success: function(data) {
                     data = JSON.parse(data);
                     if (data.status == "true") {
-                        // TODO: Do something with the query id
-                        var queryId = data.key;
+                        // Save query id to session cookie
+                        Cookies.set("queryId", data.key);
                         // send the user to the search results page
                         renderPage("search", "#q=" + encodeURIComponent(query), { logoUrl: LOGO_URL });
                         // set the contents of the search box to be the query
                         $("#search-box").val(query);
+                    }
+                },
+                error: function(e) {
+                    console.log(e);
+                }
+            });
+        }
+    }
+
+    //check to see if the answer has
+    function checkResponse(){
+        var queryId = Cookies.get("queryId");
+        if (queryId) {
+            //We have an ID to check
+            $.ajax({
+                contentType: "application/json",
+                data: JSON.stringify({
+                    key: parseInt(queryId),
+                }),
+                method: 'POST',
+                url: "/api/check",
+                success: function(data) {
+                    data = JSON.parse(data);
+                    if (data.status == "true") {
+                        // We have an answer
+                        returnAnswer(data.answer);
                     }
                 },
                 error: function(e) {
