@@ -13,6 +13,7 @@ npm install -g grunt-cli
 ```
 
 ## Development Notes
+    We are using [js-cookie](https://github.com/js-cookie/js-cookie) for storing and loading cookies.
 
 ### Handlebars
 
