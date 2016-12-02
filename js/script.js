@@ -88,7 +88,7 @@
         timerInterval = false;
     }
 
-    // change the current URL and render the s&id=4pecified Handlebars template.
+    // change the current URL and render the specified Handlebars template.
     // name should be the name of the Handlebars template, i.e. main.hbs -> "main",
     // href should typically just be the anchor portion, i.e. "#q=abc",
     // context should be a JSON object that acts as the context for the template
