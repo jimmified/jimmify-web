@@ -120,6 +120,7 @@
             $(".search-text").text(query.charAt(0).toUpperCase() + query.slice(1))
             resultsStartCounter(); //start counting
             resultsStartPolling(); //start checking
+            loadRecentQuestions(); //fetch and render recent searches
         }  else if (hash == "admin") {
             renderPage("admin", window.location.hash, {});
         } else {
@@ -183,6 +184,34 @@
                 }
             });
         }
+    }
+
+    // get the list of recent questions in the server queue and render them as
+    // list of cards on the search results page
+    function loadRecentQuestions() {
+        $.ajax({
+            url: "/api/recent",
+            success: function(data) {
+                data = JSON.parse(data);
+                if (data.status == "true") {
+                    // collect only search results from the recent queue items
+                    var recentSearches = [];
+                    for (var i = 0; i < data.recents.length; i++) {
+                        var recentSearch = data.recents[i];
+                        if (recentSearch.type == "search" && recentSearch.text && recentSearch.answer) {
+                            recentSearches.push(recentSearch);
+                        }
+                    }
+                    // only render if there are recent search results
+                    if (recentSearches.length) {
+                        insertTemplate("recentCards", "#recent-container", {"recents": recentSearches});
+                    }
+                }
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        })
     }
 
     // if the server base url is provided, make a request to get the queue
