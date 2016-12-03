@@ -123,6 +123,7 @@
             loadRecentQuestions(); //fetch and render recent searches
         }  else if (hash == "admin") {
             renderPage("admin", window.location.hash, {});
+            adminGetQuestions(); //fetch queue of unanswered questions
         } else {
             renderPage("main", "#", { logoUrl: LOGO_URL });
             $("#search-box").focus();
