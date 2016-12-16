@@ -17,16 +17,14 @@ a {
     display: block;
     margin: 100px auto 10px;
     height: 160px;
-    width: 400px;
+    max-width: 400px;
+    width: 90%
 }
 #lucky-search-btn {
     width: 143px;
 }
 #main-search-btn {
     width: 125px;
-}
-.min-width-container {
-    min-width: 980px;
 }
 #promo {
     font-family: arial;
@@ -41,7 +39,8 @@ a {
 #search-box-container {
     height: 40px;
     margin: auto;
-    width: 484px;
+    max-width: 484px;
+    width: 90%;
 }
 #search-box {
     border: 1px solid rgb(217, 217, 217);
@@ -98,6 +97,12 @@ a {
     height: 59px;
     display: flex;
     background-color: rgb(241, 241, 241);
+    padding-right: 30px;
+}
+@media only screen and (max-width: 480px) {
+	#search-bar {
+        padding-right: 10px;
+    }
 }
 
 #search-bar > #search-box-container {
@@ -136,8 +141,13 @@ a {
 }
 
 #search-results {
-    margin-left: 118px;
-    width: 700px;
+    margin: 0 30px 0 118px;
+    max-width: 700px;
+}
+@media only screen and (max-width: 480px) {
+	#search-results {
+        margin: 0 10px;
+    }
 }
 
 .result-text {
