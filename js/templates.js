@@ -9,7 +9,7 @@ this["Templates"]["main"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main
 
   return "<div>\n    <img id=\"logo\" src="
     + container.escapeExpression(((helper = (helper = helpers.logoUrl || (depth0 != null ? depth0.logoUrl : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"logoUrl","hash":{},"data":data}) : helper)))
-    + "></img>\n    <div id=\"search-box-container\">\n        <input id=\"search-box\" type=\"text\" placeholder=\"Ask Jimmy\"/>\n    </div>\n    <center id=\"search-btn-container\">\n        <div id=\"main-search-btn\" class=\"search-btn\">\n            Jimmy Search\n        </div>\n        <div id=\"lucky-search-btn\" class=\"search-btn\">\n            I'm Feeling Jimmy\n        </div>\n        <div id=\"promo\">\n            All proceeds fund children's\n            <a href=\"https://jlyneu.github.io/artwork/\">art education</a>\n        </div>\n    </center>\n    <div id=\"footer\"></div>\n</div>\n";
+    + "></img>\n    <div id=\"search-box-container\">\n        <input id=\"search-box\" type=\"text\" placeholder=\"Ask Jimmy\"/>\n    </div>\n    <center id=\"search-btn-container\">\n        <div id=\"main-search-btn\" class=\"search-btn\">\n            Jimmy Search\n        </div>\n        <div id=\"lucky-search-btn\" class=\"search-btn\">\n            I'm Feeling Jimmy\n        </div>\n        <div id=\"promo\">\n            All proceeds fund children's\n            <a href=\"https://jlyneu.github.io/artwork/\">art education</a>\n        </div>\n    </center>\n</div>\n";
 },"useData":true});
 
 this["Templates"]["questionCards"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
