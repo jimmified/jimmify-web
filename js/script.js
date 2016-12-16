@@ -45,7 +45,7 @@
         // send answer for question to server when "RESPOND" clicked on question card
         $(".answer-btn").off("click");
         $(".answer-btn").click(function(event) {
-            answerQuestion($(event.target).data("question-id"));
+            adminAnswerQuestion($(event.target).data("question-id"));
         })
     }
 
@@ -53,6 +53,39 @@
     function setLogoUrl() {
         var i = Math.floor(Math.random() * (6)) + 1;
         LOGO_URL = "img/logo" + parseInt(i) + ".png";
+    }
+
+    // Start results joke timer while waiting
+    var timerInterval = false;
+    function resultsStartCounter(){
+        var timer = 0;
+        if(timerInterval == false){
+            timerInterval = setInterval(function(){
+                ++timer;
+                $("#timer").text(timer);
+            }, 1000);
+        }
+    }
+
+    //start polling for a response
+    var pollingInterval = false;
+    function resultsStartPolling(){
+        if(pollingInterval == false){
+            pollingInterval = setInterval(function(){
+                checkResponse();
+            }, 5000);
+        }
+    }
+
+    //return the answer to the user and stop polling
+    function returnAnswer(answer) {
+        console.log(answer);
+        $(".results").text(answer); //put answer in card
+        $(".loading").removeClass("loading"); //remove loading dots
+        clearInterval(pollingInterval); //stop polling
+        pollingInterval = false;
+        clearInterval(timerInterval); //stop timer
+        timerInterval = false;
     }
 
     // change the current URL and render the specified Handlebars template.
@@ -81,10 +114,16 @@
         var hash = window.location.hash.substr(1);
         if (hash.substring(0, 2) == "q=" && hash.length > 2) {
             renderPage("search", window.location.hash, { logoUrl: LOGO_URL });
-            // set the contents of the search box to be query
-            $("#search-box").val(decodeURIComponent(hash.substring(2)));
+            // set the contents of the search box  and card to be query
+            var query = decodeURIComponent(hash.substring(2));
+            $("#search-box").val(query);
+            $(".search-text").text(query.charAt(0).toUpperCase() + query.slice(1))
+            resultsStartCounter(); //start counting
+            resultsStartPolling(); //start checking
+            loadRecentQuestions(); //fetch and render recent searches
         }  else if (hash == "admin") {
             renderPage("admin", window.location.hash, {});
+            adminGetQuestions(); //fetch queue of unanswered questions
         } else {
             renderPage("main", "#", { logoUrl: LOGO_URL });
             $("#search-box").focus();
@@ -95,35 +134,24 @@
     function makeSearch() {
         var query = $("#search-box").val().trim();
         if (query) {
-            renderPage("search", "#q=" + encodeURIComponent(query), { logoUrl: LOGO_URL });
-            // set the contents of the search box to be the query
-            $("#search-box").val(query);
-        }
-    }
-
-    // on the admin page, get the value in the server base url input field
-    function adminGetBaseUrl() {
-        var serverBaseUrl =  $("#server-base-url").val().trim();
-        // prepend http:// if not present
-        if (serverBaseUrl && (serverBaseUrl.substring(0, 4) != "http")) {
-            serverBaseUrl = "http://" + serverBaseUrl;
-        }
-        return serverBaseUrl;
-    }
-
-    // if the server base url is provided, make a request to get the queue
-    // of questions that need to be answered and display each question on a card
-    function adminGetQuestions() {
-        var serverBaseUrl = adminGetBaseUrl();
-        if (serverBaseUrl) {
+            // send the query to the server
             $.ajax({
-                url: serverBaseUrl + "/queue",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    text: query,
+                    type: "search"
+                }),
+                method: 'POST',
+                url: "/api/query",
                 success: function(data) {
                     data = JSON.parse(data);
                     if (data.status == "true") {
-                        // pass the queue of questions as context to the
-                        // template that will render each question as a card
-                        insertTemplate("questionCards", "#question-list", data);
+                        // Save query id to session cookie
+                        Cookies.set("queryId", data.key);
+                        // send the user to the search results page
+                        renderPage("search", "#q=" + encodeURIComponent(query), { logoUrl: LOGO_URL });
+                        // set the contents of the search box to be the query
+                        $("#search-box").val(query);
                     }
                 },
                 error: function(e) {
@@ -133,13 +161,85 @@
         }
     }
 
+    //check to see if the answer has
+    function checkResponse(){
+        var queryId = Cookies.get("queryId");
+        if (queryId) {
+            //We have an ID to check
+            $.ajax({
+                contentType: "application/json",
+                data: JSON.stringify({
+                    key: parseInt(queryId),
+                }),
+                method: 'POST',
+                url: "/api/check",
+                success: function(data) {
+                    data = JSON.parse(data);
+                    if (data.status == "true") {
+                        // We have an answer
+                        returnAnswer(data.answer);
+                    }
+                },
+                error: function(e) {
+                    console.log(e);
+                }
+            });
+        }
+    }
+
+    // get the list of recent questions in the server queue and render them as
+    // list of cards on the search results page
+    function loadRecentQuestions() {
+        $.ajax({
+            url: "/api/recent",
+            success: function(data) {
+                data = JSON.parse(data);
+                if (data.status == "true") {
+                    // collect only search results from the recent queue items
+                    var recentSearches = [];
+                    for (var i = 0; i < data.recents.length; i++) {
+                        var recentSearch = data.recents[i];
+                        if (recentSearch.type == "search" && recentSearch.text && recentSearch.answer) {
+                            recentSearches.push(recentSearch);
+                        }
+                    }
+                    // only render if there are recent search results
+                    if (recentSearches.length) {
+                        insertTemplate("recentCards", "#recent-container", {"recents": recentSearches});
+                    }
+                }
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        })
+    }
+
+    // if the server base url is provided, make a request to get the queue
+    // of questions that need to be answered and display each question on a card
+    function adminGetQuestions() {
+        $.ajax({
+            url: "/api/queue",
+            success: function(data) {
+                data = JSON.parse(data);
+                if (data.status == "true") {
+                    // pass the queue of questions as context to the
+                    // template that will render each question as a card
+                    insertTemplate("questionCards", "#question-list", data);
+                }
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    }
+
     // if the server base url and an answer to the question with the given id
     // are provided, send a request to the server to answer the question and
     // delete the card displaying this question
-    function answerQuestion(id) {
-        var serverBaseUrl = adminGetBaseUrl();
+    function adminAnswerQuestion(id) {
         var answer = $(".answer-input[data-question-id='" + id + "']").val().trim();
-        if (serverBaseUrl && answer) {
+        if (answer) {
             $.ajax({
                 contentType: "application/json",
                 data: JSON.stringify({
@@ -147,7 +247,7 @@
                     answer: answer
                 }),
                 method: 'POST',
-                url: serverBaseUrl + "/answer",
+                url: "/api/answer",
                 success: function(data) {
                     data = JSON.parse(data);
                     if (data.status == "true") {
