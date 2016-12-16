@@ -2,17 +2,6 @@ a {
     color: #1a0dab;
     text-decoration: none;
 }
-#footer {
-    background-color: rgb(242, 242, 242);
-    border-top-color: rgb(228, 228, 228);
-    border-top-style: solid;
-    border-top-width: 1px;
-    bottom: 0px;
-    height: 40px;
-    left: 0px;
-    position: fixed;
-    width: 100%;
-}
 #logo {
     display: block;
     margin: 100px auto 10px;
