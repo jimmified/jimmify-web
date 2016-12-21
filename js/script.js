@@ -1,12 +1,21 @@
 (function(){
 
     // path to the logo images that will be displayed
-    var LOGO_URL;
+    var HIDDEN_LOGO_NUMBER;
+    var LOGO_NUMBER;
+    var LOGO_IS_ROTATING = false;
 
     // select the logo url and render the correct page
     function init() {
 
-        setLogoUrl();
+        // initialize with google logo
+        LOGO_NUMBER = 1;
+
+        // set hidden logo number to different random logo number
+        HIDDEN_LOGO_NUMBER = LOGO_NUMBER;
+        while (HIDDEN_LOGO_NUMBER == LOGO_NUMBER) {
+            HIDDEN_LOGO_NUMBER = Math.floor(Math.random() * 6) + 1
+        }
 
         $(document).ready(function() {
             resolveLocation();
@@ -19,6 +28,16 @@
         $(window).off("hashchange");
         $(window).on("hashchange", function() {
             resolveLocation();
+        });
+        // rotate the logo whenever the user hovers over the logo
+        $("#logo-container").off("mouseenter");
+        $("#logo-container").mouseenter(function() {
+            rotateLogo();
+        });
+        // rotate the logo whenever the user clicks on the logo
+        $("#logo-container").off("click");
+        $("#logo-container").click(function() {
+            rotateLogo();
         });
         // perform a search on the main page when the "Jimmy Search" button is clicked
         $("#main-search-btn").off("click");
@@ -49,10 +68,31 @@
         })
     }
 
-    // set LOGO_URL to be the path to a random logo image
-    function setLogoUrl() {
-        var i = Math.floor(Math.random() * (6)) + 1;
-        LOGO_URL = "img/logo" + parseInt(i) + ".png";
+    // get the path to the image file of the given logo number
+    function getLogoUrl(logoNumber) {
+        return "img/logo" + parseInt(logoNumber) + ".png";
+    }
+
+    // slide the hidden logo into the displayed logo's place, then reset
+    // the elements behind the scenes while keeping the new logo displayed
+    function rotateLogo() {
+        if (!LOGO_IS_ROTATING) {
+            LOGO_IS_ROTATING = true;
+            $("#hidden-logo").animate({top: 0}, 400, "swing");
+            $("#visible-logo").animate({top: 0}, 400, "swing", function() {
+                // set the new logo number, randomize hidden logo number
+                LOGO_NUMBER = HIDDEN_LOGO_NUMBER;
+                while (HIDDEN_LOGO_NUMBER == LOGO_NUMBER) {
+                    HIDDEN_LOGO_NUMBER = Math.floor(Math.random() * 6) + 1;
+                }
+                // reset image elements so logos can be rotated again
+                $("#visible-logo").attr("src", getLogoUrl(LOGO_NUMBER));
+                $("#visible-logo").css("top", "-160px");
+                $("#hidden-logo").attr("src", getLogoUrl(HIDDEN_LOGO_NUMBER));
+                $("#hidden-logo").css("top", "-160px");
+                LOGO_IS_ROTATING = false;
+            });
+        }
     }
 
     // Start results joke timer while waiting
@@ -114,7 +154,7 @@
         // get the string after the hash
         var hash = window.location.hash.substr(1);
         if (hash.substring(0, 2) == "q=" && hash.length > 2) {
-            renderPage("search", window.location.hash, { logoUrl: LOGO_URL });
+            renderPage("search", window.location.hash, { logoUrl: getLogoUrl(LOGO_NUMBER) });
             // set the contents of the search box  and card to be query
             var query = decodeURIComponent(hash.substring(2));
             $("#search-box").val(query);
@@ -126,7 +166,11 @@
             renderPage("admin", window.location.hash, {});
             adminGetQuestions(); //fetch queue of unanswered questions
         } else {
-            renderPage("main", "#", { logoUrl: LOGO_URL });
+            var context = {
+                logoUrl: getLogoUrl(LOGO_NUMBER),
+                hiddenLogoUrl: getLogoUrl(HIDDEN_LOGO_NUMBER)
+            }
+            renderPage("main", "#", context);
             $("#search-box").focus();
         }
     }
@@ -150,7 +194,7 @@
                         // Save query id to session cookie
                         Cookies.set("queryId", data.key);
                         // send the user to the search results page
-                        renderPage("search", "#q=" + encodeURIComponent(query), { logoUrl: LOGO_URL });
+                        renderPage("search", "#q=" + encodeURIComponent(query), { logoUrl: getLogoUrl(LOGO_NUMBER) });
                         // set the contents of the search box to be the query
                         $("#search-box").val(query);
                     }
