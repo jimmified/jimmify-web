@@ -26,6 +26,7 @@ a {
     font-family: arial;
     font-size: small;
     margin-top: 12px;
+    margin-bottom: 100px;
 }
 .question-card {
     animation-duration: 1s;
