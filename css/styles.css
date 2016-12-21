@@ -2,12 +2,19 @@ a {
     color: #1a0dab;
     text-decoration: none;
 }
-#logo {
-    display: block;
+#logo-container {
+    cursor: pointer;
     margin: 100px auto 10px;
     height: 160px;
     max-width: 400px;
-    width: 90%
+    overflow: hidden;
+    width: 90%;
+}
+.logo {
+    position: relative;
+    top: -160px;
+    height: 100%;
+    width: 100%;
 }
 #lucky-search-btn {
     width: 143px;
