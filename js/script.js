@@ -82,6 +82,7 @@
         console.log(answer);
         $(".results").text(answer); //put answer in card
         $(".loading").removeClass("loading"); //remove loading dots
+        $("#num-results").text("1"); //set number of search results to 1 instead of 0
         clearInterval(pollingInterval); //stop polling
         pollingInterval = false;
         clearInterval(timerInterval); //stop timer
