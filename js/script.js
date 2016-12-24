@@ -162,7 +162,7 @@
             // check every 10 seconds if question in top 20 queue positions
             return 10 * 1000;
         } else {
-            // otherwise check after 5 * (position + 1) seconds up to 5 minutes
+            // otherwise check after 5 * (position + 1) seconds up to 20 minutes
             return Math.min((position + 1) * 5 * 1000, 20 * 60 * 1000);
         }
     }
