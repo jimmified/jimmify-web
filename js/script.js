@@ -6,6 +6,8 @@
     var LOGO_NUMBER;
     // true if the logo is currently rotating to the next logo
     var LOGO_IS_ROTATING = false;
+    // true if the "I'm Feeling Jimmy" button is currently rotating
+    var FEELING_JIMMY_IS_ROTATING = false;
     // keep track of how many times server has been polled for current question,
     var POLL_COUNT = 0;
 
@@ -33,15 +35,15 @@
         $(window).on("hashchange", function() {
             resolveLocation();
         });
-        // rotate the logo whenever the user hovers over the logo
-        $("#logo-container").off("mouseenter");
-        $("#logo-container").mouseenter(function() {
+        // rotate the logo whenever the user clicks on the logo
+        $("#lucky-search-btn").off("click");
+        $("#lucky-search-btn").click(function() {
             rotateLogo();
         });
-        // rotate the logo whenever the user clicks on the logo
-        $("#logo-container").off("click");
-        $("#logo-container").click(function() {
-            rotateLogo();
+        // rotate the "I'm Feeling Jimmy" text when the user hovers over the button
+        $("#lucky-search-btn").off("mouseenter");
+        $("#lucky-search-btn").mouseenter(function() {
+            rotateFeelingJimmy();
         });
         // perform a search on the main page when the "Jimmy Search" button is clicked
         $("#main-search-btn").off("click");
@@ -56,7 +58,6 @@
         // perform a search after pressing "enter" with the search box focused
         $(document).off("keyup");
         $(document).keyup(function(e) {
-            console.log($(".search-box"));
             if (e.which == 13 && $(".search-box").is(":focus")) {
                 makeSearch();
             }
@@ -96,6 +97,29 @@
                 $("#hidden-logo").attr("src", getLogoUrl(HIDDEN_LOGO_NUMBER));
                 $("#hidden-logo").css("top", "-160px");
                 LOGO_IS_ROTATING = false;
+            });
+        }
+    }
+
+    // rotate the "I'm Feeling Jimmy" button to a random different
+    // "I'm Feeling Jimmy" then reset the elements behind the scenes
+    function rotateFeelingJimmy() {
+        // randomly choose a new different "I'm Feeling Different" to spin to.
+        // note the original position is position 3, counting from 0
+        var newFeelingJimmyPos = 4;
+        while (newFeelingJimmyPos == 4) {
+            newFeelingJimmyPos = Math.floor(Math.random() * 9);
+        }
+
+        if (!FEELING_JIMMY_IS_ROTATING) {
+            FEELING_JIMMY_IS_ROTATING = true;
+            // get pixel offset of new scroll position
+            var pixelOffset = (newFeelingJimmyPos * -36) + "px";
+            // scroll to new position
+            $("#feeling-jimmy-container").animate({top: pixelOffset}, 400, "swing", function() {
+                // reset elements to original positions
+                $("#feeling-jimmy-container").css("top", "-144px");
+                FEELING_JIMMY_IS_ROTATING = false;
             });
         }
     }

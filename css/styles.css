@@ -3,7 +3,6 @@ a {
     text-decoration: none;
 }
 #logo-container {
-    cursor: pointer;
     margin: 140px auto 10px;
     height: 160px;
     max-width: 400px;
@@ -18,6 +17,14 @@ a {
 }
 #lucky-search-btn {
     width: 143px;
+}
+.feeling-jimmy {
+    height: 36px;
+    width: 100%;
+}
+#feeling-jimmy-container {
+    position: relative;
+    top: -144px;
 }
 #main-search-btn {
     width: 125px;
@@ -81,6 +88,7 @@ a {
     font-weight: bold;
     height: 36px;
     margin: 11px 4px;
+    overflow: hidden;
     padding: 10px 0;
     text-align: center;
 }
