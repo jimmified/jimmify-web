@@ -113,14 +113,20 @@
 
         if (!FEELING_JIMMY_IS_ROTATING) {
             FEELING_JIMMY_IS_ROTATING = true;
-            // get pixel offset of new scroll position
-            var pixelOffset = (newFeelingJimmyPos * -36) + "px";
-            // scroll to new position
-            $("#feeling-jimmy-container").animate({top: pixelOffset}, 400, "swing", function() {
-                // reset elements to original positions
-                $("#feeling-jimmy-container").css("top", "-144px");
-                FEELING_JIMMY_IS_ROTATING = false;
-            });
+            setTimeout(function() {
+                if ($("#lucky-search-btn").is(":hover")) {
+                    // get pixel offset of new scroll position
+                    var pixelOffset = (newFeelingJimmyPos * -36) + "px";
+                    // scroll to new position
+                    $("#feeling-jimmy-container").animate({top: pixelOffset}, 400, "swing", function() {
+                        // reset elements to original positions
+                        $("#feeling-jimmy-container").css("top", "-144px");
+                        FEELING_JIMMY_IS_ROTATING = false;
+                    });
+                } else {
+                    FEELING_JIMMY_IS_ROTATING = false;
+                }
+            }, 200);
         }
     }
 
