@@ -1,8 +1,10 @@
 (function(){
 
-    // path to the logo images that will be displayed
+    // number of the hidden logo that will be displayed on rotation
     var HIDDEN_LOGO_NUMBER;
+    // number of the logo that is currently displayed
     var LOGO_NUMBER;
+    // true if the logo is currently rotating to the next logo
     var LOGO_IS_ROTATING = false;
     // keep track of how many times server has been polled for current question,
     var POLL_COUNT = 0;
