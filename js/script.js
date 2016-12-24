@@ -4,6 +4,8 @@
     var HIDDEN_LOGO_NUMBER;
     var LOGO_NUMBER;
     var LOGO_IS_ROTATING = false;
+    // keep track of how many times server has been polled for current question,
+    var POLL_COUNT = 0;
 
     // select the logo url and render the correct page
     function init() {
@@ -107,26 +109,46 @@
         }
     }
 
-    //start polling for a response
-    var pollingInterval = false;
-    function resultsStartPolling(){
-        if(pollingInterval == false){
-            pollingInterval = setInterval(function(){
+    //poll for a reponse after the given delay in milliseconds
+    function pollAfterDelay(delay){
+        var prevPollCount = POLL_COUNT;
+        setTimeout(function(){
+            // if the poll count changed during the delay, there was most likely
+            // a new query so this polling loop should end
+            if (prevPollCount == POLL_COUNT) {
                 checkResponse();
-            }, 5000);
+                POLL_COUNT++;
+            }
+        }, delay);
+    }
+
+    //get the time in milliseconds that should be waited before
+    //polling based on the given position in the question queue
+    function getPollDelayTime(position){
+        if (position < 20) {
+            // check every 10 seconds if question in top 20 queue positions
+            return 10 * 1000;
+        } else {
+            // otherwise check after 5 * (position + 1) seconds up to 5 minutes
+            return Math.min((position + 1) * 5 * 1000, 5 * 60 * 1000);
         }
+    }
+
+    // reset looping search variable states, such as timers and poll loops
+    function resetSearchState() {
+        POLL_COUNT = 0;
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        timerInterval = false;
     }
 
     //return the answer to the user and stop polling
     function returnAnswer(answer) {
-        console.log(answer);
         $(".results").text(answer); //put answer in card
         $(".loading").removeClass("loading"); //remove loading dots
         $("#num-results").text("1"); //set number of search results to 1 instead of 0
-        clearInterval(pollingInterval); //stop polling
-        pollingInterval = false;
-        clearInterval(timerInterval); //stop timer
-        timerInterval = false;
+        resetSearchState();
     }
 
     // change the current URL and render the specified Handlebars template.
@@ -158,9 +180,10 @@
             // set the contents of the search box  and card to be query
             var query = decodeURIComponent(hash.substring(2));
             $("#search-box").val(query);
-            $(".search-text").text(query.charAt(0).toUpperCase() + query.slice(1))
+            $(".search-text").text(query.charAt(0).toUpperCase() + query.slice(1));
+            resetSearchState(); //reset search result timers and poll loops
             resultsStartCounter(); //start counting
-            resultsStartPolling(); //start checking
+            pollAfterDelay(0); //start checking
             loadRecentQuestions(); //fetch and render recent searches
         }  else if (hash == "admin") {
             renderPage("admin", window.location.hash, {});
@@ -197,6 +220,9 @@
                         renderPage("search", "#q=" + encodeURIComponent(query), { logoUrl: getLogoUrl(LOGO_NUMBER) });
                         // set the contents of the search box to be the query
                         $("#search-box").val(query);
+                        resetSearchState();
+                        resultsStartCounter();
+                        pollAfterDelay(getPollDelayTime(0));
                     }
                 },
                 error: function(e) {
@@ -223,6 +249,8 @@
                     if (data.status == "true") {
                         // We have an answer
                         returnAnswer(data.answer);
+                    } else {
+                        pollAfterDelay(getPollDelayTime(data.position));
                     }
                 },
                 error: function(e) {
