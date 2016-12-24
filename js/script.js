@@ -56,7 +56,8 @@
         // perform a search after pressing "enter" with the search box focused
         $(document).off("keyup");
         $(document).keyup(function(e) {
-            if (e.which == 13 && $("#search-box").is(":focus")) {
+            console.log($(".search-box"));
+            if (e.which == 13 && $(".search-box").is(":focus")) {
                 makeSearch();
             }
         });
@@ -181,7 +182,7 @@
             renderPage("search", window.location.hash, { logoUrl: getLogoUrl(LOGO_NUMBER) });
             // set the contents of the search box  and card to be query
             var query = decodeURIComponent(hash.substring(2));
-            $("#search-box").val(query);
+            $(".search-box").val(query);
             $(".search-text").text(query.charAt(0).toUpperCase() + query.slice(1));
             resetSearchState(); //reset search result timers and poll loops
             resultsStartCounter(); //start counting
@@ -196,13 +197,13 @@
                 hiddenLogoUrl: getLogoUrl(HIDDEN_LOGO_NUMBER)
             }
             renderPage("main", "#", context);
-            $("#search-box").focus();
+            $(".search-box").focus();
         }
     }
 
     // if there is a query in the search box, then perform a search
     function makeSearch() {
-        var query = $("#search-box").val().trim();
+        var query = $(".search-box").val().trim();
         if (query) {
             // send the query to the server
             $.ajax({
@@ -221,7 +222,7 @@
                         // send the user to the search results page
                         renderPage("search", "#q=" + encodeURIComponent(query), { logoUrl: getLogoUrl(LOGO_NUMBER) });
                         // set the contents of the search box to be the query
-                        $("#search-box").val(query);
+                        $(".search-box").val(query);
                         resetSearchState();
                         resultsStartCounter();
                         pollAfterDelay(getPollDelayTime(0));
