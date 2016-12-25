@@ -27,6 +27,7 @@ a {
     top: -144px;
 }
 #main-search-btn {
+    overflow: scroll;
     width: 125px;
 }
 #promo {
