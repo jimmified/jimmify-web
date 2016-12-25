@@ -27,7 +27,6 @@ a {
     top: -144px;
 }
 #main-search-btn {
-    overflow: scroll;
     width: 125px;
 }
 #promo {
@@ -108,8 +107,9 @@ a {
     height: 36px;
     margin: 11px 4px;
     overflow: hidden;
-    padding: 10px 0;
+    padding-top: 10px;
     text-align: center;
+    vertical-align: top;
 }
 
 .search-btn:hover {
