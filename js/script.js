@@ -58,9 +58,19 @@
         // perform a search after pressing "enter" with the search box focused
         $(document).off("keyup");
         $(document).keyup(function(e) {
-            if (e.which == 13 && $(".search-box").is(":focus")) {
+            if (e.which == 13 && $(".search-box-input").is(":focus")) {
                 makeSearch();
             }
+        });
+        // add box shadow to search box when the user focuses on the search input
+        $(".search-box-input").off("focus");
+        $(".search-box-input").focus(function() {
+            changeSearchBoxShadow(true);
+        });
+        // remove box shadow from search box when the search input loses focus
+        $(".search-box-input").off("blur");
+        $(".search-box-input").blur(function() {
+            changeSearchBoxShadow(false);
         });
         // get queue of questions from server when "GET QUESTIONS" button clicked
         $("#admin-get-questions").off("click");
@@ -127,6 +137,16 @@
                     FEELING_JIMMY_IS_ROTATING = false;
                 }
             }, 200);
+        }
+    }
+
+    // add box shadow to search box div if input is true.
+    // remove box shadow otherwise
+    function changeSearchBoxShadow(addShadow) {
+        if (addShadow) {
+            $(".search-box-div").addClass("search-box-focus-shadow");
+        } else {
+            $(".search-box-div").removeClass("search-box-focus-shadow");
         }
     }
 
@@ -209,11 +229,11 @@
         // get the string after the hash
         var hash = window.location.hash.substr(1);
         if (hash.substring(0, 2) == "q=" && hash.length > 2) {
-            renderPage("search", window.location.hash, { logoUrl: getLogoUrl(LOGO_NUMBER) });
-            // set the contents of the search box  and card to be query
             var query = decodeURIComponent(hash.substring(2));
-            $(".search-box").val(query);
-            $(".search-text").text(query.charAt(0).toUpperCase() + query.slice(1));
+            var displayQuery = query.charAt(0).toUpperCase() + query.slice(1);
+            renderPage("search", window.location.hash, { logoUrl: getLogoUrl(LOGO_NUMBER), query: displayQuery });
+            // set the contents of the search box and card to be query
+            $(".search-box-input").val(query);
             resetSearchState(); //reset search result timers and poll loops
             resultsStartCounter(); //start counting
             pollAfterDelay(0); //start checking
@@ -227,13 +247,13 @@
                 hiddenLogoUrl: getLogoUrl(HIDDEN_LOGO_NUMBER)
             }
             renderPage("main", "#", context);
-            $(".search-box").focus();
+            $(".search-box-input").focus();
         }
     }
 
     // if there is a query in the search box, then perform a search
     function makeSearch() {
-        var query = $(".search-box").val().trim();
+        var query = $(".search-box-input").val().trim();
         if (query) {
             // send the query to the server
             $.ajax({
@@ -249,13 +269,15 @@
                     if (data.status == "true") {
                         // Save query id to session cookie
                         Cookies.set("queryId", data.key);
+                        var displayQuery = query.charAt(0).toUpperCase() + query.slice(1);
                         // send the user to the search results page
-                        renderPage("search", "#q=" + encodeURIComponent(query), { logoUrl: getLogoUrl(LOGO_NUMBER) });
+                        renderPage("search", "#q=" + encodeURIComponent(query), { logoUrl: getLogoUrl(LOGO_NUMBER), query: displayQuery });
                         // set the contents of the search box to be the query
-                        $(".search-box").val(query);
+                        $(".search-box-input").val(query);
                         resetSearchState();
                         resultsStartCounter();
                         pollAfterDelay(getPollDelayTime(0));
+                        loadRecentQuestions();
                     }
                 },
                 error: function(e) {
