@@ -25,7 +25,7 @@ this["Templates"]["questionCards"] = Handlebars.template({"1":function(container
     + alias4(((helper = (helper = helpers.key || (depth0 != null ? depth0.key : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
     + "</div>\n        <div class=\"group\">\n            <input class=\"answer-input\" data-question-id="
     + alias4(((helper = (helper = helpers.key || (depth0 != null ? depth0.key : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
-    + " type=\"text\" required>\n            <span class=\"highlight\"></span>\n            <span class=\"bar\"></span>\n            <label>Answer</label>\n        </div>\n        <a class=\"answer-btn btn-flat\" data-question-id="
+    + " type=\"text\" required maxlength=\"800\">\n            <span class=\"highlight\"></span>\n            <span class=\"bar\"></span>\n            <label>Answer</label>\n        </div>\n        <a class=\"answer-btn btn-flat\" data-question-id="
     + alias4(((helper = (helper = helpers.key || (depth0 != null ? depth0.key : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data}) : helper)))
     + ">RESPOND</a>\n    </div>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
