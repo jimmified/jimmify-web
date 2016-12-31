@@ -25,7 +25,7 @@
 
         $(document).ready(function() {
             resolveLocation();
-        })
+        });
     }
 
     // set all of the event listeners that are needed
@@ -210,6 +210,9 @@
     // context should be a JSON object that acts as the context for the template
     function renderPage(name, href, context) {
         location.href = href;
+        // update google analytics tracker
+        ga("set", "page", "/" + name);
+        ga("send", "pageview");
         insertTemplate(name, "body", context);
     }
 
