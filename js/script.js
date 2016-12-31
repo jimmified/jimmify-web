@@ -274,7 +274,7 @@
                         Cookies.set("queryId", data.key);
                         var displayQuery = query.charAt(0).toUpperCase() + query.slice(1);
                         // send the user to the search results page
-                        renderPage("search", "#q=" + encodeURIComponent(query), { logoUrl: getLogoUrl(LOGO_NUMBER), query: displayQuery });
+                        location.href = "#q=" + encodeURIComponent(query);
                         // set the contents of the search box to be the query
                         $(".search-box-input").val(query);
                         resetSearchState();
