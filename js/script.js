@@ -275,6 +275,7 @@
                         var displayQuery = query.charAt(0).toUpperCase() + query.slice(1);
                         // send the user to the search results page
                         location.href = "#q=" + encodeURIComponent(query);
+                        renderPage("search", window.location.hash, { logoUrl: getLogoUrl(LOGO_NUMBER), query: displayQuery });
                         // set the contents of the search box to be the query
                         $(".search-box-input").val(query);
                         resetSearchState();
