@@ -72,6 +72,18 @@
         $(".search-box-input").blur(function() {
             changeSearchBoxShadow(false);
         });
+        // try to login as admin when "LOGIN" button clicked
+        $("#admin-login-btn").off("click");
+        $("#admin-login-btn").click(function() {
+            var username = $("#username-input").val().trim();
+            var password = $("#password-input").val();
+            adminLogin(username, password);
+        });
+        // remove "auth" cookie and send user to admin login when "LOGOUT" button clicked
+        $("#admin-logout-btn").off("click");
+        $("#admin-logout-btn").click(function() {
+            adminLogout();
+        });
         // get queue of questions from server when "GET QUESTIONS" button clicked
         $("#admin-get-questions").off("click");
         $("#admin-get-questions").click(function() {
@@ -241,11 +253,13 @@
             resultsStartCounter(); //start counting
             pollAfterDelay(0); //start checking
             loadRecentQuestions(); //fetch and render recent searches
-        } else if (hash == "login") {
-            renderPage("login", window.location.hash, {});
-        }  else if (hash == "admin") {
-            renderPage("admin", window.location.hash, {});
-            adminGetQuestions(); //fetch queue of unanswered questions
+        } else if (hash == "login" || hash == "admin") {
+            if (isAdmin()) {
+                renderPage("admin", "#admin", {});
+                adminGetQuestions(); //fetch queue of unanswered questions
+            } else {
+                renderPage("login", "#login", {});
+            }
         } else {
             var context = {
                 logoUrl: getLogoUrl(LOGO_NUMBER),
@@ -349,11 +363,50 @@
         })
     }
 
+    // return true if the admin is logged in (has "auth" cookie set),
+    // return false otherwise
+    function isAdmin() {
+        return !!Cookies.get("auth");
+    }
+
+    // try to login as admin with username and password. if successful,
+    // set jwt in response to cookie that expires after a week and navigate
+    // user to admin page
+    function adminLogin(username, password) {
+        if (username && password) {
+            $.ajax({
+                contentType: "application/json",
+                data: JSON.stringify({
+                    username: username,
+                    password: password
+                }),
+                method: 'POST',
+                url: "/api/login",
+                success: function(data) {
+                    Cookies.set("auth", data, { expires: 7 });
+                    renderPage("admin", "#admin", {});
+                },
+                error: function(e) {
+                    console.log(e);
+                }
+            });
+        }
+    }
+
+    // remove the "auth" cookie and send the user back to admin login page
+    function adminLogout() {
+        Cookies.remove("auth");
+        renderPage("login", "#login", {});
+    }
+
     // if the server base url is provided, make a request to get the queue
     // of questions that need to be answered and display each question on a card
     function adminGetQuestions() {
+        if (!isAdmin()) {
+            adminLogout();
+        }
         $.ajax({
-            url: "/api/queue",
+            url: "/api/queue?token=" + Cookies.get("auth"),
             success: function(data) {
                 data = JSON.parse(data);
                 if (data.status == "true") {
@@ -364,6 +417,9 @@
             },
             error: function(e) {
                 console.log(e);
+                if (e.status == 401) {
+                    adminLogout();
+                }
             }
         });
     }
@@ -372,13 +428,17 @@
     // are provided, send a request to the server to answer the question and
     // delete the card displaying this question
     function adminAnswerQuestion(id) {
+        if (!isAdmin()) {
+            adminLogout();
+        }
         var answer = $(".answer-input[data-question-id='" + id + "']").val().trim();
         if (answer) {
             $.ajax({
                 contentType: "application/json",
                 data: JSON.stringify({
                     key: id,
-                    answer: answer
+                    answer: answer,
+                    token: Cookies.get("auth")
                 }),
                 method: 'POST',
                 url: "/api/answer",
@@ -391,6 +451,9 @@
                 },
                 error: function(e) {
                     console.log(e);
+                    if (e.status == 401) {
+                        adminLogout();
+                    }
                 }
             });
         }
