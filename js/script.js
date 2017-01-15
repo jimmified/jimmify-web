@@ -241,6 +241,8 @@
             resultsStartCounter(); //start counting
             pollAfterDelay(0); //start checking
             loadRecentQuestions(); //fetch and render recent searches
+        } else if (hash == "login") {
+            renderPage("login", window.location.hash, {});
         }  else if (hash == "admin") {
             renderPage("admin", window.location.hash, {});
             adminGetQuestions(); //fetch queue of unanswered questions
