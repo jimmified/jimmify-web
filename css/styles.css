@@ -35,6 +35,9 @@ a {
     margin-top: 12px;
     margin-bottom: 100px;
 }
+#login-title-card {
+    margin-bottom: 40px;
+}
 .question-card {
     animation-duration: 1s;
     animation-name: slidein;
