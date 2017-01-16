@@ -383,8 +383,12 @@
                 method: 'POST',
                 url: "/api/login",
                 success: function(data) {
-                    Cookies.set("auth", data, { expires: 7 });
-                    renderPage("admin", "#admin", {});
+                    data = JSON.parse(data);
+                    if (data.status == "true") {
+                        Cookies.set("auth", data.token, { expires: 7 });
+                        renderPage("admin", "#admin", {});
+                    }
+
                 },
                 error: function(e) {
                     console.log(e);
@@ -403,7 +407,7 @@
     // of questions that need to be answered and display each question on a card
     function adminGetQuestions() {
         if (!isAdmin()) {
-            adminLogout();
+            return adminLogout();
         }
         $.ajax({
             url: "/api/queue?token=" + Cookies.get("auth"),
@@ -429,7 +433,7 @@
     // delete the card displaying this question
     function adminAnswerQuestion(id) {
         if (!isAdmin()) {
-            adminLogout();
+            return adminLogout();
         }
         var answer = $(".answer-input[data-question-id='" + id + "']").val().trim();
         if (answer) {
