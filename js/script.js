@@ -55,11 +55,24 @@
         $("#search-button").click(function() {
             makeSearch();
         });
-        // perform a search after pressing "enter" with the search box focused
+        // perform various actions after pressing "enter" depending on which element is focused
         $(document).off("keyup");
         $(document).keyup(function(e) {
-            if (e.which == 13 && $(".search-box-input").is(":focus")) {
+            // ignore keys presses that aren't "enter"
+            if (e.which != 13) {
+                return;
+            }
+            if ($(".search-box-input").is(":focus")) {
+                // search box on main page or search results page
                 makeSearch();
+            } else if ($(".answer-input").is(":focus")) {
+                // answer text box in admin interface
+                adminAnswerQuestion($(":focus").data("question-id"));
+            } else if ($("#username-input").is(":focus") || $("#password-input").is(":focus")) {
+                // login username or password text box
+                var username = $("#username-input").val().trim();
+                var password = $("#password-input").val();
+                adminLogin(username, password);
             }
         });
         // add box shadow to search box when the user focuses on the search input
@@ -259,6 +272,7 @@
                 adminGetQuestions(); //fetch queue of unanswered questions
             } else {
                 renderPage("login", "#login", {});
+                $("#username-input").focus();
             }
         } else {
             var context = {
@@ -403,6 +417,18 @@
         renderPage("login", "#login", {});
     }
 
+    // if there is at least one question to be answered in the admin interface,
+    // focus the input field of the top question
+    function adminFocusTopQuestion() {
+        var answerInputs = $(".answer-input");
+        if (answerInputs.length) {
+            // remember previous scroll positions so that focusing doesn't change scroll positions
+            var x = document.body.scrollLeft, y = document.body.scrollTop;
+            $(answerInputs[0]).focus();
+            window.scrollTo(x, y);
+        }
+    }
+
     // if the server base url is provided, make a request to get the queue
     // of questions that need to be answered and display each question on a card
     function adminGetQuestions() {
@@ -417,6 +443,7 @@
                     // pass the queue of questions as context to the
                     // template that will render each question as a card
                     insertTemplate("questionCards", "#question-list", data);
+                    adminFocusTopQuestion();
                 }
             },
             error: function(e) {
@@ -451,6 +478,7 @@
                     if (data.status == "true") {
                         // delete the card if successful
                         $(".question-card[data-question-id='" + id + "']").remove();
+                        adminFocusTopQuestion();
                     }
                 },
                 error: function(e) {
