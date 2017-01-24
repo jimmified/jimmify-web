@@ -123,8 +123,9 @@
             $("#visible-logo").animate({top: 0}, 400, "swing", function() {
                 // set the new logo number, randomize hidden logo number
                 LOGO_NUMBER = HIDDEN_LOGO_NUMBER;
-                while (HIDDEN_LOGO_NUMBER == LOGO_NUMBER) {
-                    HIDDEN_LOGO_NUMBER = Math.floor(Math.random() * 6) + 1;
+                HIDDEN_LOGO_NUMBER = LOGO_NUMBER + 1;
+                if (HIDDEN_LOGO_NUMBER > 6) {
+                    HIDDEN_LOGO_NUMBER = 1;
                 }
                 // reset image elements so logos can be rotated again
                 $("#visible-logo").attr("src", getLogoUrl(LOGO_NUMBER));

@@ -2,6 +2,32 @@ a {
     color: #1a0dab;
     text-decoration: none;
 }
+
+#search-header {
+    padding: 20px;
+    color: rgba(0, 0, 0, 0.75);
+    font-size: 13px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 24px;
+    font-family: arial,sans-serif;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+}
+
+.header-item {
+    padding-right: 16px;
+    cursor: pointer;
+}
+
+.header-item:hover {
+    text-decoration: underline;
+}
+
 #logo-container {
     margin: 140px auto 10px;
     height: 160px;
