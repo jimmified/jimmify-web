@@ -14,6 +14,11 @@
     // select the logo url and render the correct page
     function init() {
 
+        // initialize queryText cookie if not already present
+        if (!Cookies.get("queryText")) {
+            Cookies.set("queryText", "{}");
+        }
+
         // initialize with google logo
         LOGO_NUMBER = 1;
 
@@ -189,13 +194,13 @@
     }
 
     //poll for a reponse after the given delay in milliseconds
-    function pollAfterDelay(delay){
+    function pollAfterDelay(queryId, delay){
         var prevPollCount = POLL_COUNT;
         setTimeout(function(){
             // if the poll count changed during the delay, there was most likely
             // a new query so this polling loop should end
             if (prevPollCount == POLL_COUNT) {
-                checkResponse();
+                checkResponse(queryId);
                 POLL_COUNT++;
             }
         }, delay);
@@ -258,14 +263,12 @@
         // get the string after the hash
         var hash = window.location.hash.substr(1);
         if (hash.substring(0, 2) == "q=" && hash.length > 2) {
-            var query = decodeURIComponent(hash.substring(2));
-            var displayQuery = query.charAt(0).toUpperCase() + query.slice(1);
-            renderPage("search", window.location.hash, { logoUrl: getLogoUrl(LOGO_NUMBER), query: displayQuery });
-            // set the contents of the search box and card to be query
-            $(".search-box-input").val(query);
+            var queryId = Number(decodeURIComponent(hash.substring(2)));
+            renderPage("search", window.location.hash, {logoUrl: getLogoUrl(LOGO_NUMBER)});
+            setQuestionText(queryId);
             resetSearchState(); //reset search result timers and poll loops
             resultsStartCounter(); //start counting
-            pollAfterDelay(0); //start checking
+            pollAfterDelay(queryId, 0); //start checking
             loadRecentQuestions(); //fetch and render recent searches
         } else if (hash == "login" || hash == "admin") {
             if (isAdmin()) {
@@ -285,6 +288,65 @@
         }
     }
 
+    // get the question text for the given queryId either from the cookie
+    // or from the server, then set display the question text on the results
+    // page. if fetching from the server, update the question text cookie
+    function setQuestionText(queryId) {
+        var queryText;
+        var cachedQueries = JSON.parse(Cookies.get("queryText"));
+
+        if (cachedQueries[queryId]) {
+            queryText = cachedQueries[queryId];
+            $("#search-question").text(queryText);
+            // set the contents of the search box and card to be query
+            $(".search-box-input").val(queryText);
+        } else {
+            $.ajax({
+                contentType: "application/json",
+                data: JSON.stringify({
+                    key: queryId
+                }),
+                method: 'POST',
+                url: "/api/question",
+                success: function(data) {
+                    data = JSON.parse(data);
+                    if (data.status == "true") {
+                        queryText = data.text;
+                        updateCachedQueries(queryId, queryText);
+                        // display question text
+                        $("#search-question").text(queryText);
+                        // set the contents of the search box and card to be query
+                        $(".search-box-input").val(queryText);
+                    } else {
+                        queryText = "Uh oh...";
+                        $("#search-question").text(queryText);
+                        returnAnswer("Sadly, Jimmy couldn't find your question. Try refreshing the page or asking another one!");
+                    }
+                },
+                error: function(e) {
+                    queryText = "Uh oh...";
+                    $("#search-question").text(queryText);
+                    returnAnswer("Sadly, Jimmy couldn't find your question. Try refreshing the page or asking another one!");
+                }
+            })
+        }
+    }
+
+    // adds the given query id and query text to the queryText cookie.
+    // however, if the current size of the cookie is already large,
+    // first remove the currently cached query texts
+    function updateCachedQueries(queryId, queryText) {
+        var cachedQueries;
+        var cachedQueriesString = Cookies.get("queryText");
+        if (cachedQueriesString.length > 3000) {
+            cachedQueries = {};
+        } else {
+            cachedQueries = JSON.parse(cachedQueriesString);
+        }
+        cachedQueries[queryId] = queryText;
+        Cookies.set("queryText", JSON.stringify(cachedQueries));
+    }
+
     // if there is a query in the search box, then perform a search
     function makeSearch() {
         var query = $(".search-box-input").val().trim();
@@ -301,18 +363,16 @@
                 success: function(data) {
                     data = JSON.parse(data);
                     if (data.status == "true") {
-                        // Save query id to session cookie
-                        Cookies.set("queryId", data.key);
-                        var displayQuery = query.charAt(0).toUpperCase() + query.slice(1);
+                        // Save query text to session cookie
+                        updateCachedQueries(Number(data.key), query);
                         // send the user to the search results page
-                        location.href = "#q=" + encodeURIComponent(query);
-                        insertTemplate("search", "body", { logoUrl: getLogoUrl(LOGO_NUMBER), query: displayQuery });
+                        location.href = "#q=" + encodeURIComponent(data.key);
+                        insertTemplate("search", "body", { logoUrl: getLogoUrl(LOGO_NUMBER)});
                         // set the contents of the search box to be the query
                         $(".search-box-input").val(query);
                         resetSearchState();
                         resultsStartCounter();
-                        pollAfterDelay(getPollDelayTime(0));
-                        loadRecentQuestions();
+                        pollAfterDelay(data.key, getPollDelayTime(0));
                     }
                 },
                 error: function(e) {
@@ -323,8 +383,7 @@
     }
 
     //check to see if the answer has
-    function checkResponse(){
-        var queryId = Cookies.get("queryId");
+    function checkResponse(queryId){
         if (queryId) {
             //We have an ID to check
             $.ajax({
@@ -340,7 +399,7 @@
                         // We have an answer
                         returnAnswer(data.answer);
                     } else {
-                        pollAfterDelay(getPollDelayTime(data.position));
+                        pollAfterDelay(queryId, getPollDelayTime(data.position));
                     }
                 },
                 error: function(e) {
