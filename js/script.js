@@ -14,6 +14,9 @@
     // select the logo url and render the correct page
     function init() {
 
+        // allow Handlebars templates to be used as partials
+        Handlebars.partials = Templates;
+
         // initialize queryText cookie if not already present
         if (!Cookies.get("queryText")) {
             Cookies.set("queryText", "{}");
@@ -106,12 +109,22 @@
         $("#admin-get-questions").off("click");
         $("#admin-get-questions").click(function() {
             adminGetQuestions();
-        })
+        });
         // send answer for question to server when "RESPOND" clicked on question card
         $(".answer-btn").off("click");
         $(".answer-btn").click(function(event) {
             adminAnswerQuestion($(event.target).data("question-id"));
-        })
+        });
+        // hide/show app drawer on click of app drawer icon
+        $("#app-drawer-toggle").off("click");
+        $("#app-drawer-toggle").click(function() {
+            var appDrawerContainer = $("#app-drawer-container");
+            if (appDrawerContainer.css("display") === "none") {
+                appDrawerContainer.css("display", "block");
+            } else {
+                appDrawerContainer.css("display", "none");
+            }
+        });
     }
 
     // get the path to the image file of the given logo number
