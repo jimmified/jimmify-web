@@ -119,10 +119,21 @@
         $("#app-drawer-toggle").off("click");
         $("#app-drawer-toggle").click(function() {
             var appDrawerContainer = $("#app-drawer-container");
-            if (appDrawerContainer.css("display") === "none") {
-                appDrawerContainer.css("display", "block");
+            if (!appDrawerContainer.is(":visible")) {
+                appDrawerContainer.show();
             } else {
-                appDrawerContainer.css("display", "none");
+                appDrawerContainer.hide();
+            }
+        });
+        // click events for the entire document
+        $(document).off("click");
+        $(document).click(function(event) {
+            // hide the app drawer if anything outside the app drawer is clicked on
+            var appDrawerContainer = $("#app-drawer-container");
+            if (!$(event.target).closest("#app-drawer-container, #app-drawer-toggle").length) {
+                if (appDrawerContainer.is(":visible")) {
+                    appDrawerContainer.hide();
+                }
             }
         });
         // log clicks on app drawer icons with google analytics
