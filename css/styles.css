@@ -72,7 +72,8 @@ a {
 }
 
 .app {
-    color: rgb(64, 64, 64);
+    color: rgba(64, 64, 64, 0.38);
+    cursor: pointer;
     display: inline-block;
     font-size: 13px;
     height: 100px;
