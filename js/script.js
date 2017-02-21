@@ -125,6 +125,12 @@
                 appDrawerContainer.css("display", "none");
             }
         });
+        // log clicks on app drawer icons with google analytics
+        $(".app").off("click");
+        $(".app").click(function() {
+            var appName = $(this).find(".app-name").text();
+            appDrawerClickAnalytics(appName);
+        });
     }
 
     // get the path to the image file of the given logo number
@@ -258,6 +264,17 @@
         ga("set", "page", "/" + name);
         ga("send", "pageview");
         insertTemplate(name, "body", context);
+    }
+
+    // logs click of app drawer icon using google analytics
+    function appDrawerClickAnalytics(appName) {
+        if (appName) {
+            ga("send", "event", {
+                "eventCategory": "AppDrawer",
+                "eventAction": "Click",
+                "eventLabel": appName
+            });
+        }
     }
 
     // insert the Handlebars template into the page.
