@@ -319,6 +319,10 @@
                 renderPage("login", "#login", {});
                 $("#username-input").focus();
             }
+        } else if (hash == "privacy") {
+            renderPage("privacy", "#privacy", {});
+        } else if (hash == "terms") {
+            renderPage("terms", "#terms", {});
         } else {
             var context = {
                 logoUrl: getLogoUrl(LOGO_NUMBER),
