@@ -11,6 +11,13 @@
     // keep track of how many times server has been polled for current question,
     var POLL_COUNT = 0;
 
+    // list of messages to display to users while waiting for search results
+    var LOADING_MESSAGES = [
+        "Don't worry, Jimmy is a certified search engine. Your results will appear here when he finishes them.",
+        "Jimmy might be sleeping on the job... but we're sure he'll get to your question when someone wakes him up.",
+        "Jimmy's working up a sweat answering questions. He will get to yours soon!"
+    ];
+
     // select the logo url and render the correct page
     function init() {
 
@@ -147,6 +154,11 @@
     // get the path to the image file of the given logo number
     function getLogoUrl(logoNumber) {
         return "img/logo" + parseInt(logoNumber) + ".png";
+    }
+
+    function getRandomLoadingMessage() {
+        var messageNum = Math.floor(Math.random() * LOADING_MESSAGES.length);
+        return LOADING_MESSAGES[messageNum];
     }
 
     // slide the hidden logo into the displayed logo's place, then reset
@@ -305,7 +317,7 @@
         var hash = window.location.hash.substr(1);
         if (hash.substring(0, 2) == "q=" && hash.length > 2) {
             var queryId = Number(decodeURIComponent(hash.substring(2)));
-            renderPage("search", window.location.hash, {logoUrl: getLogoUrl(LOGO_NUMBER)});
+            renderPage("search", window.location.hash, {logoUrl: getLogoUrl(LOGO_NUMBER), loadingMessage: getRandomLoadingMessage()});
             setQuestionText(queryId);
             resetSearchState(); //reset search result timers and poll loops
             resultsStartCounter(); //start counting
@@ -408,7 +420,7 @@
                         updateCachedQueries(Number(data.key), query);
                         // send the user to the search results page
                         location.href = "#q=" + encodeURIComponent(data.key);
-                        insertTemplate("search", "body", { logoUrl: getLogoUrl(LOGO_NUMBER)});
+                        insertTemplate("search", "body", { logoUrl: getLogoUrl(LOGO_NUMBER), loadingMessage: getRandomLoadingMessage()});
                         // set the contents of the search box to be the query
                         $(".search-box-input").val(query);
                         resetSearchState();
