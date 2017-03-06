@@ -63,6 +63,7 @@
         $("#search-button").click(function() {
             makeSearch();
         });
+
         // perform various actions after pressing "enter" depending on which element is focused
         $(document).off("keyup");
         $(document).keyup(function(e) {
@@ -441,6 +442,7 @@
                         returnAnswer(data.answer);
                     } else {
                         pollAfterDelay(queryId, getPollDelayTime(data.position));
+                        loadJimmyBump(data.position);
                     }
                 },
                 error: function(e) {
@@ -476,6 +478,17 @@
                 console.log(e);
             }
         })
+    }
+
+    // If the query is deep into the queue give them an ad
+    // that allows them to pay
+    function loadJimmyBump(position) {
+        if (position > 0) {
+            var hash = window.location.hash.substr(1);
+            var queryId = Number(decodeURIComponent(hash.substring(2)));
+            insertTemplate("jimmyBump", "#jimmy-bump-container",
+            {"queryId": queryId});
+        }
     }
 
     // return true if the admin is logged in (has "auth" cookie set),
