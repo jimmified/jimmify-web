@@ -502,8 +502,12 @@
         if (position > 0) {
             var hash = window.location.hash.substr(1);
             var queryId = Number(decodeURIComponent(hash.substring(2)));
-            insertTemplate("jimmyBump", "#jimmy-bump-container",
-            {"queryId": queryId});
+
+            if($("#jimmy-bump-container").children().length == 0) {
+                insertTemplate("jimmyBump", "#jimmy-bump-container",
+                {"queryId": queryId});
+            }
+
         }
     }
 
