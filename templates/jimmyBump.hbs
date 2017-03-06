@@ -1,0 +1,13 @@
+<div>Jimmy works for tips. Bump your question to the top of the queue</div>
+<form action="/api/charge" method="POST">
+    <script
+      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+      data-key="pk_test_SKbNm387eH53ZtMsaf1vKtpI"
+      data-amount="100"
+      data-name="Jimmy Search"
+      data-description="Move to top of queue"
+      data-image="/img/favicon.ico"
+      data-locale="auto">
+    </script>
+    <input type="text" name="queryId" value="{{queryId}}"></input>
+</form>
