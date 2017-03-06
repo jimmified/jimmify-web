@@ -254,8 +254,9 @@ a {
 #search-bar {
     height: 86px;
     display: flex;
-    background-color: rgb(241, 241, 241);
+    background-color: #FAFAFA;
     padding-right: 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 @media only screen and (max-width: 480px) {
 	#search-bar {
