@@ -335,6 +335,8 @@
             renderPage("privacy", "#privacy", {});
         } else if (hash == "terms") {
             renderPage("terms", "#terms", {});
+        } else if (hash == "about") {
+            renderPage("about", "#about", {});
         } else {
             var context = {
                 logoUrl: getLogoUrl(LOGO_NUMBER),
