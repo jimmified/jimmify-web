@@ -168,12 +168,40 @@ app.search = {
     // that allows them to pay
     loadJimmyBump: function(position) {
         if (position > 0) {
-            var hash = window.location.hash.substr(1);
-            var queryId = Number(decodeURIComponent(hash.substring(2)));
-
             if($("#jimmy-bump-container").children().length == 0) {
+                // Render pay dialog
                 insertTemplate("jimmyBump", "#jimmy-bump-container",
-                {"queryId": queryId});
+                {"position": position});
+
+                // Configure Stripe pay button
+                var handler = StripeCheckout.configure({
+                    key: "pk_test_SKbNm387eH53ZtMsaf1vKtpI",
+                    image: "/img/favicon.ico",
+                    locale: "auto",
+                    token: function(token) {
+                        // You can access the token ID with `token.id`.
+                        // Get the token ID to your server-side code for use.
+                    }
+                });
+
+                // clear pay button event handlers
+                $("#stripe-pay-btn").off("click");
+                $(window).off("popstate");
+
+                $("#stripe-pay-btn").on("click", function(e) {
+                    // Open Checkout with further options:
+                    handler.open({
+                        name: "Jimmy Search",
+                        description: "Move to top of queue",
+                        amount: 100
+                    });
+                    e.preventDefault();
+                });
+
+                // Close Checkout on page navigation:
+                $(window).on("popstate", function() {
+                    handler.close();
+                });
             }
         }
     }
