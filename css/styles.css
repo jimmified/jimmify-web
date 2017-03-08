@@ -348,41 +348,65 @@ a {
       .5em 0 0 rgba(0, 0, 0, 0.85);}}
 
 .stripe-btn {
-    float: right;
-    margin: 6px 4px !important;
-    padding: 0 8px !important;
+    background-color: rgba(3, 155, 229, 0.7);
+    border: none;
+    border-radius: 2px;
+    bottom: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    height: auto;
+    padding: 9px 10px;
+    margin: 0 20px;
+    outline: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    text-transform: uppercase;
+    transition: background-color .2s;
+    -webkit-tap-highlight-color: transparent;
+    vertical-align: middle;
+}
+.stripe-btn:focus, .stripe-btn:hover {
+  background-color: rgba(3, 155, 229, 1.0);
 }
 .stripe-card-title {
     color: rgba(0, 0, 0, 0.8);
-    font-size: 20px;
+    font-size: 1em;
     font-weight: 500;
-    letter-spacing: 0.03px;
-    line-height: 24px;
-    margin-bottom: 14px;
+}
+.stripe-ad-text {
+    color: #006621;
+    border: 1px solid #006621;
+    border-radius: 2px;
+    padding: 0 2px 0 2px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
 }
 .stripe-card-text {
     color: rgba(0, 0, 0, 0.57);
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
-    margin-bottom: 12px;
 }
+
 #jimmy-bump-container {
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 2px;
-    bottom: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-    padding: 21px 24px 12px 24px;
-    position: fixed;
-    right: 10px;
-    width: 280px;
-    z-index: 4;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    width: 100%;
+    margin-bottom: 10px;
+    position: relative;
 }
-@media only screen and (max-width: 480px) {
-	#jimmy-bump-container {
+@media only screen and (max-width: 768px) {
+    #jimmy-bump-container {
+        padding-bottom: 45px;
+    }
+	.stripe-btn {
+        left: 0;
+        margin: 0 5px;
         right: auto;
-        left: 50%;
-        transform: translate(-50%, 0);
     }
 }
