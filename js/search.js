@@ -181,6 +181,25 @@ app.search = {
                     token: function(token) {
                         // You can access the token ID with `token.id`.
                         // Get the token ID to your server-side code for use.
+                        console.log("Calling!");
+                        var hash = window.location.hash.substr(1);
+                        var queryId = Number(decodeURIComponent(hash.substring(2)));
+                        $.ajax({
+                            contentType: "application/json",
+                            data: JSON.stringify({
+                                key: parseInt(queryId),
+                                token: token.id,
+                            }),
+                            method: 'POST',
+                            url: "/api/charge",
+                            success: function(data) {
+                                data = JSON.parse(data);
+                                console.log(data);
+                            },
+                            error: function(e) {
+                                console.log(e);
+                            }
+                        });
                     }
                 });
 
