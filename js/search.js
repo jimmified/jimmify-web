@@ -125,7 +125,13 @@ app.search = {
                     data = JSON.parse(data);
                     if (data.status == "true") {
                         // We have an answer
+                        var answer = data.answer;
                         app.search.returnAnswer(data.answer);
+                        // display links from the response
+                        var links = data.links;
+                        if (links && links.length > 0) {
+                            insertTemplate("resultLinks", "#result-links-container", {"links": links});
+                        }
                     } else {
                         app.search.pollAfterDelay(queryId, app.search.getPollDelayTime(data.position));
                         app.search.loadJimmyBump(data.position);
