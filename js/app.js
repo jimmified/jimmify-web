@@ -110,6 +110,16 @@ function setListeners() {
     $("#admin-get-questions").click(function() {
         app.admin.getQuestions();
     });
+    // add an input field for a URL on an answer card when clicking "+ Add a link"
+    $(".admin-add-link").off("click");
+    $(".admin-add-link").click(function(event) {
+        // create a new div to serve as the container for the new input field
+        var newInputContainer = $(document.createElement("div"));
+        // add new input container to list of answer links
+        $(event.target).parent().find(".answer-links").append(newInputContainer);
+        // insert input text field into new input container
+        insertTemplate("answerLink", newInputContainer, {"key": $(event.target).data("question-id")});
+    });
     // send answer for question to server when "RESPOND" clicked on question card
     $(".answer-btn").off("click");
     $(".answer-btn").click(function(event) {

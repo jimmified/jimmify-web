@@ -410,3 +410,8 @@ a {
         right: auto;
     }
 }
+.admin-add-link {
+    color: #039BE5;
+    display: block;
+    margin: 0 0 20px 40px;
+}

@@ -92,12 +92,21 @@ app.admin = {
             return app.admin.logout();
         }
         var answer = $(".answer-input[data-question-id='" + id + "']").val().trim();
+        var links = [];
+        var linkDivs = $(".answer-link[data-question-id='" + id + "']");
+        for (var i = 0; i < linkDivs.length; i++) {
+            var url = $(linkDivs[i]).val().trim();
+            if (url) {
+                links.push(url)
+            }
+        }
         if (answer) {
             $.ajax({
                 contentType: "application/json",
                 data: JSON.stringify({
                     key: id,
                     answer: answer,
+                    links: links,
                     token: Cookies.get("auth")
                 }),
                 method: 'POST',
