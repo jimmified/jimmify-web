@@ -135,6 +135,11 @@ function setListeners() {
             appDrawerContainer.hide();
         }
     });
+    $("#notification-icon").off("click");
+    $("#notification-icon").click(function() {
+        var audio = new Audio("/sounds/bell.mp3");
+        audio.play();
+    });
     // click events for the entire document
     $(document).off("click");
     $(document).click(function(event) {
