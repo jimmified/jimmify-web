@@ -221,36 +221,47 @@ function resolveLocation() {
 // if there is a query in the search box, then perform a search
 function makeSearch() {
     var query = $(".search-box-input").val().trim();
-    if (query) {
-        // send the query to the server
-        $.ajax({
-            contentType: "application/json",
-            data: JSON.stringify({
-                text: query,
-                type: "search"
-            }),
-            method: 'POST',
-            url: "/api/query",
-            success: function(data) {
-                data = JSON.parse(data);
-                if (data.status == "true") {
-                    // Save query text to session cookie
-                    updateCachedQueries(Number(data.key), query);
-                    // send the user to the search results page
-                    location.href = "#q=" + encodeURIComponent(data.key);
-                    insertTemplate("search", "body", { logoUrl: app.home.getLogoUrl(LOGO_NUMBER), loadingMessage: app.search.getRandomLoadingMessage()});
-                    // set the contents of the search box to be the query
-                    $(".search-box-input").val(query);
-                    app.search.resetSearchState();
-                    app.search.resultsStartCounter();
-                    app.search.pollAfterDelay(data.key, app.search.getPollDelayTime(0));
-                }
-            },
-            error: function(e) {
-                console.log(e);
-            }
-        });
+    if (!query) {
+        return;
     }
+
+    // if the user has asked this question before, bring the user to
+    // the search results page for that query
+    var cachedQueries = JSON.parse(Cookies.get("queryText"));
+    for (var key in cachedQueries) {
+        if (cachedQueries[key] == query) {
+            location.href = "#q=" + encodeURIComponent(key);
+            return;
+        }
+    }
+
+    $.ajax({
+        contentType: "application/json",
+        data: JSON.stringify({
+            text: query,
+            type: "search"
+        }),
+        method: 'POST',
+        url: "/api/query",
+        success: function(data) {
+            data = JSON.parse(data);
+            if (data.status == "true") {
+                // Save query text to session cookie
+                updateCachedQueries(Number(data.key), query);
+                // send the user to the search results page
+                location.href = "#q=" + encodeURIComponent(data.key);
+                insertTemplate("search", "body", { logoUrl: app.home.getLogoUrl(LOGO_NUMBER), loadingMessage: app.search.getRandomLoadingMessage()});
+                // set the contents of the search box to be the query
+                $(".search-box-input").val(query);
+                app.search.resetSearchState();
+                app.search.resultsStartCounter();
+                app.search.pollAfterDelay(data.key, app.search.getPollDelayTime(0));
+            }
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
 }
 
 // adds the given query id and query text to the queryText cookie.
