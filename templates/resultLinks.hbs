@@ -1,10 +1,7 @@
-<div class="card">
-    <div class="result-links">
-        <div class="card-title">In addition, Jimmy thinks you're better off checking out these links</div>
-        {{#each links}}
-            <div class="card-text result-link">
-                <a href={{this}} target="_blank">{{this}}</a>
-            </div>
-        {{/each}}
+{{#each links}}
+    <div class="card-list-element">
+        <div class="result-link">
+            <a href={{this}} target="_blank">{{this}}</a>
+        </div>
     </div>
-</div>
+{{/each}}

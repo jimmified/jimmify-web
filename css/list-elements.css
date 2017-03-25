@@ -1,6 +1,5 @@
 .card-list-element {
-	min-height: 40px;
-	padding: 10 40 20 40;
+	padding: 20px 40px 20px 40px;
 	border-top: 1px solid rgba(0, 0, 0, 0.17);
 	cursor:pointer;
 	color: rgba(0, 0, 0, 0.57);

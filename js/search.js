@@ -128,7 +128,7 @@ app.search = {
                         var answer = data.answer;
                         app.search.returnAnswer(data.answer);
                         // display links from the response
-                        var links = data.links;
+                        var links = data.list;
                         if (links && links.length > 0) {
                             insertTemplate("resultLinks", "#result-links-container", {"links": links});
                         }

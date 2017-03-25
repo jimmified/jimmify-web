@@ -106,6 +106,7 @@ app.admin = {
                 data: JSON.stringify({
                     key: id,
                     answer: answer,
+                    list: links,
                     token: Cookies.get("auth"),
                     type: "search"
                 }),
