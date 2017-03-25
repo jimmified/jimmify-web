@@ -19,8 +19,8 @@ app.home = {
     rotateLogo: function() {
         if (!app.home.LOGO_IS_ROTATING) {
             app.home.LOGO_IS_ROTATING = true;
-            $("#hidden-logo").animate({top: 0}, 400, "swing");
-            $("#visible-logo").animate({top: 0}, 400, "swing", function() {
+            $("#hidden-logo").parent().animate({top: 0}, 400, "swing");
+            $("#visible-logo").parent().animate({top: 0}, 400, "swing", function() {
                 // set the new logo number, randomize hidden logo number
                 LOGO_NUMBER = HIDDEN_LOGO_NUMBER;
                 HIDDEN_LOGO_NUMBER = LOGO_NUMBER + 1;
@@ -29,9 +29,9 @@ app.home = {
                 }
                 // reset image elements so logos can be rotated again
                 $("#visible-logo").attr("src", app.home.getLogoUrl(LOGO_NUMBER));
-                $("#visible-logo").css("top", "-160px");
+                $("#visible-logo").parent().css("top", "-160px");
                 $("#hidden-logo").attr("src", app.home.getLogoUrl(HIDDEN_LOGO_NUMBER));
-                $("#hidden-logo").css("top", "-160px");
+                $("#hidden-logo").parent().css("top", "-160px");
                 app.home.LOGO_IS_ROTATING = false;
             });
         }
