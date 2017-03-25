@@ -98,7 +98,8 @@ app.admin = {
                 data: JSON.stringify({
                     key: id,
                     answer: answer,
-                    token: Cookies.get("auth")
+                    token: Cookies.get("auth"),
+                    type: "search"
                 }),
                 method: 'POST',
                 url: "/api/answer",
