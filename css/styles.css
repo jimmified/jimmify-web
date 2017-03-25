@@ -485,3 +485,7 @@ body {
   -webkit-animation-name: shake;
   animation-name: shake;
 }
+
+.payment-complete {
+    display: none;
+}

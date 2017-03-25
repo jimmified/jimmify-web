@@ -1,9 +1,25 @@
+{{#if paid}}
+<div style="width: 100%; padding: 10px;">
+    <div class="payment-processing">
+        <div class="stripe-card-title" style="padding-top: 10px;">Your payment is processing</div>
+    </div>
+    <div class="payment-complete">
+        <svg width="100" height="65" style="float: left">
+            <path id="check" d="M15,35 25,50 l30,-35" />
+        </svg>
+        <div class="stripe-card-title">Thank you for your support!</div>
+        <div class="stripe-card-text">You are now at position {{position}}</div>
+    </div>
+</div>
+{{else}}
 <div>
-    <div class="stripe-card-title">Uh oh! Looks like Jimmy is in high demand.</div>
-    <div class="stripe-card-text"><span class="stripe-ad-text">Ad</span> | jimmified.com | position {{position}}</div>
-    <div class="stripe-card-text">Support the site to bump your place in queue.</div>
-    <div class="stripe-card-text">All payments agree to the <a href="#terms">terms and conditions</a>.</div>
+        <div class="stripe-card-title">Uh oh! Looks like Jimmy is in high demand.</div>
+        <div class="stripe-card-text"><span class="stripe-ad-text">Ad</span> | jimmified.com | position {{position}}</div>
+        <div class="stripe-card-text">Support the site to bump your place in queue.</div>
+        <div class="stripe-card-text">All payments agree to the <a href="#terms">terms and conditions</a>.</div>
+
 </div>
 <div>
     <a id="stripe-pay-btn" class="stripe-btn">Support for $1</a>
 </div>
+{{/if}}

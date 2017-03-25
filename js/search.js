@@ -190,6 +190,8 @@ app.search = {
                         console.log("Calling!");
                         var hash = window.location.hash.substr(1);
                         var queryId = Number(decodeURIComponent(hash.substring(2)));
+                        insertTemplate("jimmyBump", "#jimmy-bump-container",
+                        {"paid": true, "position": 0});
                         $.ajax({
                             contentType: "application/json",
                             data: JSON.stringify({
@@ -200,7 +202,8 @@ app.search = {
                             url: "/api/charge",
                             success: function(data) {
                                 data = JSON.parse(data);
-                                console.log(data);
+                                $('.payment-processing').fadeOut('slow');
+                                $('.payment-complete').fadeIn('slow');
                             },
                             error: function(e) {
                                 console.log(e);
