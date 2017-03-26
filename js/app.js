@@ -9,6 +9,8 @@ rendering new pages, making a search, and cookies
 var HIDDEN_LOGO_NUMBER;
 // number of the logo that is currently displayed
 var LOGO_NUMBER;
+// number of times the user has clicked the bell icon in one session
+var BELL_COUNT = 1;
 
 // select the logo url and render the correct page
 function init() {
@@ -139,6 +141,12 @@ function setListeners() {
     $("#notification-icon").click(function() {
         var audio = new Audio("/sounds/bell.mp3");
         audio.play();
+        ga("send", "event", {
+            "eventCategory": "Bell",
+            "eventAction": "Click",
+            "eventValue": BELL_COUNT
+        });
+        BELL_COUNT += 1;
     });
     // click events for the entire document
     $(document).off("click");
