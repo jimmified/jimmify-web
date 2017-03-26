@@ -44,7 +44,7 @@ app.search = {
             // if the poll count changed during the delay, there was most likely
             // a new query so this polling loop should end
             if (prevPollCount == app.search.POLL_COUNT) {
-                app.search.checkResponse(queryId);
+                app.search.checkResponse(queryId, false);
                 app.search.POLL_COUNT++;
             }
         }, delay);
@@ -111,7 +111,7 @@ app.search = {
         }
     },
     //check to see if the answer has
-    checkResponse: function(queryId) {
+    checkResponse: function(queryId, bumpError) {
         if (queryId) {
             //We have an ID to check
             $.ajax({
@@ -134,7 +134,7 @@ app.search = {
                         }
                     } else {
                         app.search.pollAfterDelay(queryId, app.search.getPollDelayTime(data.position));
-                        app.search.loadJimmyBump(data.position);
+                        app.search.loadJimmyBump(data.position, bumpError);
                     }
                 },
                 error: function(e) {
@@ -172,12 +172,12 @@ app.search = {
     },
     // If the query is deep into the queue give them an ad
     // that allows them to pay
-    loadJimmyBump: function(position) {
-        if (position > 0) {
-            if($("#jimmy-bump-container").children().length == 0) {
+    loadJimmyBump: function(position, bumpError) {
+        if (position > 0 || bumpError) {
+            if($("#jimmy-bump-container").children().length == 0 || bumpError) {
                 // Render pay dialog
                 insertTemplate("jimmyBump", "#jimmy-bump-container",
-                {"position": position});
+                {"position": position, "bumpError": bumpError});
 
                 // Configure Stripe pay button
                 var handler = StripeCheckout.configure({
@@ -187,9 +187,11 @@ app.search = {
                     token: function(token) {
                         // You can access the token ID with `token.id`.
                         // Get the token ID to your server-side code for use.
-                        console.log("Calling!");
                         var hash = window.location.hash.substr(1);
                         var queryId = Number(decodeURIComponent(hash.substring(2)));
+                        insertTemplate("jimmyBump", "#jimmy-bump-container",
+                        {"paid": true, "position": 0});
+                        $('#stripe-pay-btn').hide();
                         $.ajax({
                             contentType: "application/json",
                             data: JSON.stringify({
@@ -200,7 +202,13 @@ app.search = {
                             url: "/api/charge",
                             success: function(data) {
                                 data = JSON.parse(data);
-                                console.log(data);
+                                if (data.status == "true") {
+                                    $('.payment-processing').fadeOut('slow', function() {
+                                        $('.payment-complete').css("display", "flex").hide().fadeIn('slow');
+                                    });
+                                } else {
+                                    app.search.checkResponse(queryId, true);
+                                }
                             },
                             error: function(e) {
                                 console.log(e);

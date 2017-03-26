@@ -484,4 +484,39 @@ body {
 .shake {
   -webkit-animation-name: shake;
   animation-name: shake;
+ }
+
+.payment-processing, .payment-complete{
+    min-height: 65px;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.payment-processing .stripe-card-title, .payment-complete > div {
+    padding-left: 15px;
+}
+
+.payment-processing {
+    padding-left: 40px;
+}
+
+.payment-complete {
+    display: none;
+    padding-left: 15px;
 }
