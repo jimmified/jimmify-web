@@ -1,15 +1,25 @@
 {{#if paid}}
-<div style="width: 100%; padding: 10px;">
+<div style="width: 100%;">
     <div class="payment-processing">
-        <div class="stripe-card-title" style="padding-top: 10px;">Your payment is processing</div>
+        <div class="loader">Loading...</div>
+        <div class="stripe-card-title">Your payment is processing</div>
     </div>
     <div class="payment-complete">
-        <svg width="100" height="65" style="float: left">
+        <svg width="65" height="65">
             <path id="check" d="M15,35 25,50 l30,-35" />
         </svg>
-        <div class="stripe-card-title">Thank you for your support!</div>
-        <div class="stripe-card-text">You are now at position {{position}}</div>
+        <div>
+            <div class="stripe-card-title">Thank you for your support!</div>
+            <div class="stripe-card-text">You are now at position {{position}}.</div>
+        </div>
     </div>
+
+</div>
+{{else if bumpError}}
+<div class="payment-error">
+    <div class="stripe-card-title">An error has occured.</div>
+    <div class="stripe-card-text">Please try again.</div>
+    <div class="stripe-card-text">You are now at position {{position}}.</div>
 </div>
 {{else}}
 <div>
@@ -19,7 +29,7 @@
         <div class="stripe-card-text">All payments agree to the <a href="#terms">terms and conditions</a>.</div>
 
 </div>
+{{/if}}
 <div>
     <a id="stripe-pay-btn" class="stripe-btn">Support for $1</a>
 </div>
-{{/if}}
