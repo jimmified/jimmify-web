@@ -167,8 +167,16 @@ function setListeners() {
     // log clicks on app drawer icons with google analytics
     $(".app").off("click");
     $(".app").click(function() {
-        var appName = $(this).find(".app-name").text();
+        var appDiv = $(this);
+        var appName = appDiv.find(".app-name").text();
         app.home.appDrawerClickAnalytics(appName);
+        var fileNumber = Math.floor(Math.random() * 3) + 1;
+        var audio = new Audio("/sounds/logo" + fileNumber + ".wav");
+        audio.play();
+        appDiv.addClass("animated").addClass("shake");
+        setTimeout(function() {
+            appDiv.removeClass("animated").removeClass("shake");
+        }, 300);
     });
 }
 
