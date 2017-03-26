@@ -147,6 +147,11 @@ function setListeners() {
             "eventValue": BELL_COUNT
         });
         BELL_COUNT += 1;
+        var icon = $("#notification-icon");
+        icon.addClass("shake");
+        setTimeout(function() {
+            icon.removeClass("shake");
+        }, 300);
     });
     // click events for the entire document
     $(document).off("click");
