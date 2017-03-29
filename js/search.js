@@ -5,8 +5,8 @@ questions, and stripe interactions when the question is deep in the queue
 */
 
 app.search = {
-    // keep track of how many times server has been polled for current question,
-    POLL_COUNT: 0,
+    // keep track of the id of the current query that is being answered
+    CURRENT_QUERY_ID: -1,
     // list of messages to display to users while waiting for search results
     LOADING_MESSAGES: [
         "Don't worry, Jimmy is a certified search engine. Your results will appear here when he finishes them.",
@@ -15,7 +15,7 @@ app.search = {
     ],
     // reset looping search variable states, such as timers and poll loops
     resetSearchState: function() {
-        app.search.POLL_COUNT = 0;
+        app.search.CURRENT_QUERY_ID = -1;
         if (app.search.timerInterval) {
             clearInterval(app.search.timerInterval);
         }
@@ -39,13 +39,12 @@ app.search = {
     },
     //poll for a reponse after the given delay in milliseconds
     pollAfterDelay: function(queryId, delay) {
-        var prevPollCount = app.search.POLL_COUNT;
+        var prevQueryId = app.search.CURRENT_QUERY_ID;
         setTimeout(function(){
             // if the poll count changed during the delay, there was most likely
             // a new query so this polling loop should end
-            if (prevPollCount == app.search.POLL_COUNT) {
+            if (prevQueryId == app.search.CURRENT_QUERY_ID && prevQueryId == queryId) {
                 app.search.checkResponse(queryId, false);
-                app.search.POLL_COUNT++;
             }
         }, delay);
     },
@@ -132,7 +131,7 @@ app.search = {
                         if (links && links.length > 0) {
                             $("#result-links-container").show();
                             $("#recent-container").hide();
-                            $("#jimmy-bump").hide();
+                            $("#jimmy-bump-container").hide();
                             insertTemplate("resultLinks", "#result-links-container", {"links": links});
                         }
                     } else {

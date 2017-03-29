@@ -204,6 +204,7 @@ function resolveLocation() {
         renderPage("search", window.location.hash, {logoUrl: app.home.getLogoUrl(LOGO_NUMBER), loadingMessage: app.search.getRandomLoadingMessage()});
         app.search.setQuestionText(queryId);
         app.search.resetSearchState(); //reset search result timers and poll loops
+        app.search.CURRENT_QUERY_ID = queryId;
         app.search.resultsStartCounter(); //start counting
         app.search.pollAfterDelay(queryId, 0); //start checking
         app.search.loadRecentQuestions(); //fetch and render recent searches
@@ -268,6 +269,7 @@ function makeSearch() {
                 $(".search-box-input").val(query);
                 app.search.resetSearchState();
                 app.search.resultsStartCounter();
+                app.search.CURRENT_QUERY_ID = data.key;
                 app.search.pollAfterDelay(data.key, app.search.getPollDelayTime(0));
             }
         },
