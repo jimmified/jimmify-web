@@ -132,6 +132,7 @@ app.search = {
                         if (links && links.length > 0) {
                             $("#result-links-container").show();
                             $("#recent-container").hide();
+                            $("#jimmy-bump").hide();
                             insertTemplate("resultLinks", "#result-links-container", {"links": links});
                         }
                     } else {
