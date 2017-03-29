@@ -336,6 +336,10 @@ body {
     font-size: 1.6em;
 }
 
+#result-links-container {
+    display: none;
+}
+
 /*http://stackoverflow.com/a/27319196*/
 .loading:after {
   content: ' .';

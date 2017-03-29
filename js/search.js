@@ -130,6 +130,8 @@ app.search = {
                         // display links from the response
                         var links = data.list;
                         if (links && links.length > 0) {
+                            $("#result-links-container").show();
+                            $("#recent-container").hide();
                             insertTemplate("resultLinks", "#result-links-container", {"links": links});
                         }
                     } else {
