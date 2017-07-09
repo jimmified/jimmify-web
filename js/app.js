@@ -9,6 +9,8 @@ rendering new pages, making a search, and cookies
 var HIDDEN_LOGO_NUMBER;
 // number of the logo that is currently displayed
 var LOGO_NUMBER;
+// number of times the user has clicked the bell icon in one session
+var BELL_COUNT = 1;
 
 // select the logo url and render the correct page
 function init() {
@@ -139,6 +141,17 @@ function setListeners() {
     $("#notification-icon").click(function() {
         var audio = new Audio("/sounds/bell.mp3");
         audio.play();
+        ga("send", "event", {
+            "eventCategory": "Bell",
+            "eventAction": "Click",
+            "eventValue": BELL_COUNT
+        });
+        BELL_COUNT += 1;
+        var icon = $("#notification-icon");
+        icon.addClass("shake");
+        setTimeout(function() {
+            icon.removeClass("shake");
+        }, 300);
     });
     // click events for the entire document
     $(document).off("click");
@@ -191,6 +204,7 @@ function resolveLocation() {
         renderPage("search", window.location.hash, {logoUrl: app.home.getLogoUrl(LOGO_NUMBER), loadingMessage: app.search.getRandomLoadingMessage()});
         app.search.setQuestionText(queryId);
         app.search.resetSearchState(); //reset search result timers and poll loops
+        app.search.CURRENT_QUERY_ID = queryId;
         app.search.resultsStartCounter(); //start counting
         app.search.pollAfterDelay(queryId, 0); //start checking
         app.search.loadRecentQuestions(); //fetch and render recent searches
@@ -245,7 +259,7 @@ function makeSearch() {
         url: "/api/query",
         success: function(data) {
             data = JSON.parse(data);
-            if (data.status == "true") {
+            if (data.status) {
                 // Save query text to session cookie
                 updateCachedQueries(Number(data.key), query);
                 // send the user to the search results page
@@ -255,6 +269,7 @@ function makeSearch() {
                 $(".search-box-input").val(query);
                 app.search.resetSearchState();
                 app.search.resultsStartCounter();
+                app.search.CURRENT_QUERY_ID = data.key;
                 app.search.pollAfterDelay(data.key, app.search.getPollDelayTime(0));
             }
         },
