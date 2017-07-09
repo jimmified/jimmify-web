@@ -259,7 +259,7 @@ function makeSearch() {
         url: "/api/query",
         success: function(data) {
             data = JSON.parse(data);
-            if (data.status == "true") {
+            if (data.status) {
                 // Save query text to session cookie
                 updateCachedQueries(Number(data.key), query);
                 // send the user to the search results page

@@ -27,7 +27,7 @@ app.admin = {
                 url: "/api/login",
                 success: function(data) {
                     data = JSON.parse(data);
-                    if (data.status == "true") {
+                    if (data.status) {
                         Cookies.set("auth", data.token, { expires: 7 });
                         renderPage("admin", "#admin", {});
                     }
@@ -68,7 +68,7 @@ app.admin = {
             url: "/api/queue?token=" + Cookies.get("auth"),
             success: function(data) {
                 data = JSON.parse(data);
-                if (data.status == "true") {
+                if (data.status) {
                     // pass the queue of questions as context to the
                     // template that will render each question as a card
                     insertTemplate("questionCards", "#question-list", data);

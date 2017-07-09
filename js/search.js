@@ -88,7 +88,7 @@ app.search = {
                 url: "/api/question",
                 success: function(data) {
                     data = JSON.parse(data);
-                    if (data.status == "true") {
+                    if (data.status) {
                         queryText = data.text;
                         updateCachedQueries(queryId, queryText);
                         // display question text
