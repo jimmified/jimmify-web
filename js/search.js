@@ -122,7 +122,7 @@ app.search = {
                 url: "/api/check",
                 success: function(data) {
                     data = JSON.parse(data);
-                    if (data.status == "true") {
+                    if (data.status) {
                         // We have an answer
                         var answer = data.answer;
                         app.search.returnAnswer(data.answer);
