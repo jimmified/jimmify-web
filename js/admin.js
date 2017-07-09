@@ -114,7 +114,7 @@ app.admin = {
                 url: "/api/answer",
                 success: function(data) {
                     data = JSON.parse(data);
-                    if (data.status == "true") {
+                    if (data.status) {
                         // delete the card if successful
                         $(".question-card[data-question-id='" + id + "']").remove();
                         app.admin.focusTopQuestion();

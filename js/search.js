@@ -152,7 +152,7 @@ app.search = {
             url: "/api/recent",
             success: function(data) {
                 data = JSON.parse(data);
-                if (data.status == "true") {
+                if (data.status) {
                     // collect only search results from the recent queue items
                     var recentSearches = [];
                     for (var i = 0; i < data.recents.length; i++) {
@@ -204,7 +204,7 @@ app.search = {
                             url: "/api/charge",
                             success: function(data) {
                                 data = JSON.parse(data);
-                                if (data.status == "true") {
+                                if (data.status) {
                                     $('.payment-processing').fadeOut('slow', function() {
                                         $('.payment-complete').css("display", "flex").hide().fadeIn('slow');
                                     });
