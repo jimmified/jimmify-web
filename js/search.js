@@ -181,8 +181,8 @@ app.search = {
 
                 // Configure Stripe pay button
                 var handler = StripeCheckout.configure({
-                    key: "pk_test_SKbNm387eH53ZtMsaf1vKtpI",
-                    image: "/img/favicon.ico",
+                    key: "pk_test_p0nMUzFPNs4mlOf7jlDRxxPK",
+                    image: "/img/icon.png",
                     locale: "auto",
                     token: function(token) {
                         // You can access the token ID with `token.id`.
@@ -217,7 +217,7 @@ app.search = {
                     // Open Checkout with further options:
                     handler.open({
                         name: "Jimmy Search",
-                        description: "Move to top of queue",
+                        description: "Move your search to top of queue",
                         amount: 100
                     });
                     e.preventDefault();

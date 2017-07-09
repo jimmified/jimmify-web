@@ -173,7 +173,11 @@ body {
     font-family: arial;
     font-size: small;
     margin-top: 12px;
-    margin-bottom: 100px;
+}
+#disclaimer {
+    font-family: arial;
+    font-size: small;
+    color: rgba(0,0,0,.35);
 }
 #login-title-card {
     margin-bottom: 40px;
