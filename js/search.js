@@ -183,7 +183,7 @@ app.search = {
 
                 // Configure Stripe pay button
                 var handler = StripeCheckout.configure({
-                    key: "pk_test_p0nMUzFPNs4mlOf7jlDRxxPK",
+                    key: "pk_live_HBOwxIhB3SGzIwMWg2QIm5i3",
                     image: "/img/icon.png",
                     locale: "auto",
                     token: function(token) {
