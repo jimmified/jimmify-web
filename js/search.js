@@ -175,7 +175,7 @@ app.search = {
     // If the query is deep into the queue give them an ad
     // that allows them to pay
     loadJimmyBump: function(position, bumpError) {
-        if (position > 0 || bumpError) {
+        if (position > 20 || bumpError) {
             if($("#jimmy-bump-container").children().length == 0 || bumpError) {
                 // Render pay dialog
                 insertTemplate("jimmyBump", "#jimmy-bump-container",
