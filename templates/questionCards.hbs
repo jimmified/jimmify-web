@@ -1,7 +1,7 @@
 {{#each queue}}
-    <div class="question-card card" data-question-id={{key}}>
+    <div class="question-card card {{#if paid}}paid animated-forever shake{{/if}}" data-question-id={{key}}>
         <div class="card-title">{{text}}</div>
-        <div class="card-text">Question id: {{key}}</div>
+        <div class="card-text">Question id: {{key}} {{#if paid}}(~*~*¡¡¡PAID!!!*~*~){{/if}}</div>
         <div class="group">
             <input class="answer-input" data-question-id={{key}} type="text" required maxlength="800">
             <span class="highlight"></span>

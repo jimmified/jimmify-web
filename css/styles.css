@@ -455,6 +455,14 @@ body {
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
+.animated-forever {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
 @-webkit-keyframes shake {
   from, to {
     -webkit-transform: translate3d(0, 0, 0);
@@ -493,6 +501,10 @@ body {
   -webkit-animation-name: shake;
   animation-name: shake;
  }
+
+.paid {
+    background-color: rgba(0,255,0,0.2) !important;
+}
 
 .payment-processing, .payment-complete{
     min-height: 65px;
