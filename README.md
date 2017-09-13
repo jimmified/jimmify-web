@@ -4,12 +4,6 @@
 
 ```bash
 npm install
-grunt build
-```
-
-Don't have grunt installed?
-```bash
-npm install -g grunt-cli
 ```
 
 We are using [js-cookie](https://github.com/js-cookie/js-cookie) for storing and loading cookies.
