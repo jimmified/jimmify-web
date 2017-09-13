@@ -19,12 +19,6 @@ func BuildSite() (string, error) {
 		os.Chdir(working) // change dir back to working directory
 		return path, errors.New("Jimmify Web: could not run npm install")
 	}
-	grunt := exec.Command("grunt", "build")
-	err = grunt.Run()
-	if err != nil {
-		os.Chdir(working) // change dir back to working directory
-		return path, errors.New("Jimmify Web: could not run grunt build")
-	}
 	os.Chdir(working) // change dir back to working directory
 	return path, nil
 }
